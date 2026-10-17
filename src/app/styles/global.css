@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  font-family:
+    Inter,
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  --brand-primary: #3f7050;
+  --brand-mid: #4e8a62;
+  --brand-dark: #2d5038;
+  --brand-light: #ebf5ed;
+
+  --neutral-950: #1c1f1d;
+  --neutral-600: #6b716e;
+  --neutral-400: #9ba09d;
+  --neutral-300: #b0b5b2;
+  --neutral-150: #e4e8e6;
+  --neutral-50: #f3f5f4;
+
+  --background: #f3f5f4;
+  --foreground: #1c1f1d;
+  --card: #ffffff;
+  --card-foreground: #1c1f1d;
+  --popover: #ffffff;
+  --popover-foreground: #1c1f1d;
+  --primary: #3f7050;
+  --primary-foreground: #ffffff;
+  --secondary: #ebf5ed;
+  --secondary-foreground: #2d5038;
+  --muted: #ebf5ed;
+  --muted-foreground: #6b716e;
+  --accent: #ebf5ed;
+  --accent-foreground: #2d5038;
+  --destructive: #c0392b;
+  --destructive-foreground: #ffffff;
+  --border: #e4e8e6;
+  --input: #e4e8e6;
+  --ring: #4e8a62;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1c1f1d;
+  --sidebar-border: #e4e8e6;
+  --sidebar-accent: #ebf5ed;
+  --sidebar-accent-foreground: #2d5038;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--primary) 24%, transparent);
+  color: var(--foreground);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
