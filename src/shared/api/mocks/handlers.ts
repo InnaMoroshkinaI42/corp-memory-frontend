@@ -76,4 +76,20 @@ export const handlers = [
   http.get('/api/companies/:id/join-requests', async ({ params }) => {
     return HttpResponse.json(db.joinRequests.filter(r => r.company_id === params.id))
   }),
+
+
+  // --- Profile ---
+http.get('/api/profile', async () => {
+  await delay(200)
+  return HttpResponse.json({
+    uuid: CURRENT_USER_ID,
+    first_name: 'Алексей',
+    last_name: 'Морозов',
+    email: 'a.morozov@nordwind.ru',
+    phone: '+7 916 240-18-52',
+    role: 'Владелец',
+    joined: 'Май 2024',
+    timezone: 'Europe/Moscow',
+  })
+}),
 ]
