@@ -1,13 +1,18 @@
-import { QueryClientProvider } from '@tanstack/react-query'
-import { type Scope } from 'effector'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'effector-react'
 import { BrowserRouter } from 'react-router-dom'
-import { queryClient } from '@/shared/api/query-client'
+import type { Scope } from 'effector'
 import { Router } from './router'
 
-export { appStarted } from './init'
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 60_000, retry: 1 } },
+})
 
-export const App = ({ scope }: { scope: Scope }) => {
+type AppProps = {
+  scope: Scope
+}
+
+export const App = ({ scope }: AppProps) => {
   return (
     <Provider value={scope}>
       <QueryClientProvider client={queryClient}>
@@ -18,3 +23,5 @@ export const App = ({ scope }: { scope: Scope }) => {
     </Provider>
   )
 }
+
+export { appStarted } from './init'

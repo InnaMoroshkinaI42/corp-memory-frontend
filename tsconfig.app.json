@@ -23,7 +23,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    /* Aliases */
     "paths": {
       "@/*": ["./src/*"]
     }
