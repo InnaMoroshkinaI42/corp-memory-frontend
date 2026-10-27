@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { publicRoutes, protectedRoutes } from './routes.model'
 import type { IRoute } from './types'
 
@@ -10,7 +10,6 @@ const renderRoutes = (routes: IRoute[]) =>
 export const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
       {renderRoutes(publicRoutes)}
       {renderRoutes(protectedRoutes)}
       <Route path="*" element={<div>404</div>} />
