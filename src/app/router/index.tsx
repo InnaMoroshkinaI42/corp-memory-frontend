@@ -3,9 +3,16 @@ import { publicRoutes, protectedRoutes } from './routes.model'
 import type { IRoute } from './types'
 
 const renderRoutes = (routes: IRoute[]) =>
-  routes.map((route) => (
-    <Route key={route.path} path={route.path} element={route.element} />
-  ))
+  routes.map((route) => {
+    if (route.children) {
+      return (
+        <Route key={route.path} path={route.path} element={route.element}>
+          {renderRoutes(route.children)}
+        </Route>
+      )
+    }
+    return <Route key={route.path} path={route.path} element={route.element} />
+  })
 
 export const Router = () => {
   return (

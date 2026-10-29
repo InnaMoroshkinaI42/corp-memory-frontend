@@ -16,6 +16,14 @@ export interface Company {
   name: string
   owner_id: string
   created_at: string
+  // Поля для UI (мок-данные)
+  role?: string
+  members?: number
+  documents?: number
+  chats?: number
+  plan?: string
+  industry?: string
+  lastActive?: string
 }
 
 export interface Chat {

@@ -39,7 +39,7 @@ export function LoginPage() {
             
             <div className="grid gap-1.5">
               <label className="text-[13px] font-semibold text-[var(--text)]">Пароль</label>
-              <AuthInput icon="lock" type="password" />
+              <AuthInput icon="lock" type="password" defaultValue="пумпум"/>
             </div>
 
             <div className="flex items-center justify-between mt-1">

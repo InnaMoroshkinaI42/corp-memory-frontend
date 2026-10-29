@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { ProfileHeader } from './ui/ProfileHeader'
 import { PersonalDataCard } from './ui/PersonalDataCard'
 import { NotificationsCard } from './ui/NotificationsCard'
 import { SecuritySidebar } from './ui/SecuritySidebar'
@@ -32,7 +31,7 @@ export function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg)]">
-      <ProfileHeader />
+
       
       <main className="mx-auto max-w-6xl p-8">
         <div className="mb-8">
@@ -53,13 +52,6 @@ export function ProfilePage() {
           </div>
         </div>
 
-        <footer className="mt-12 flex justify-between border-t border-[var(--border)] pt-6 text-sm text-[var(--text-3)]">
-          <div>© 2026 MeetMind</div>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-[var(--text)]">Конфиденциальность</a>
-            <a href="#" className="hover:text-[var(--text)]">Поддержка</a>
-          </div>
-        </footer>
       </main>
     </div>
   )
