@@ -24,6 +24,7 @@ export interface Company {
   plan?: string
   industry?: string
   lastActive?: string
+  owner_name?: string
 }
 
 export interface Chat {

@@ -5,6 +5,9 @@ import { CompaniesPage } from '@/pages/companies'
 import { OverviewPage } from '@/pages/overview'
 import { CompanyLayout, MainLayout } from '@/app/layouts'  // <-- добавили MainLayout
 import type { IRoute } from './types'
+import { CreateCompanyPage } from '@/pages/companies/CreateCompanyPage'
+import { JoinCompanyPage } from '@/pages/companies/JoinCompanyPage'
+
 
 export const publicRoutes: IRoute[] = [
   { path: '/', element: <LandingPage /> },
@@ -19,6 +22,8 @@ export const protectedRoutes: IRoute[] = [
     children: [
       { path: '/profile', element: <ProfilePage /> },
       { path: '/companies', element: <CompaniesPage /> },
+      { path: '/companies/create', element: <CreateCompanyPage /> },
+     { path: '/companies/join', element: <JoinCompanyPage /> },
     ],
   },
   {

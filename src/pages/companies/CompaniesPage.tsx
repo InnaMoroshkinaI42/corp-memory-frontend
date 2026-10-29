@@ -65,12 +65,16 @@ export function CompaniesPage() {
             </p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="gap-2">
-              <Link2Icon className="size-4" /> Вступить в компанию
-            </Button>
-            <Button className="gap-2 bg-[var(--brand-primary)] hover:bg-[var(--brand-dark)] text-white">
-              <PlusIcon className="size-4" /> Создать компанию
-            </Button>
+            <Link to="/companies/join">
+              <Button variant="outline" className="gap-2">
+                <Link2Icon className="size-4" /> Вступить в компанию
+              </Button>
+            </Link>
+            <Link to="/companies/create">
+              <Button className="gap-2 bg-[var(--brand-primary)] hover:bg-[var(--brand-dark)] text-white">
+                <PlusIcon className="size-4" /> Создать компанию
+              </Button>
+            </Link>
           </div>
         </div>
 

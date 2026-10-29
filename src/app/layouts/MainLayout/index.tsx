@@ -12,9 +12,17 @@ export function MainLayout() {
 
   if (!user) return <div className="p-8">Загрузка...</div>
 
-  const breadcrumbs = location.pathname === '/profile'
-    ? [{ label: 'Профиль' }]
-    : [{ label: 'Мои компании' }]
+const breadcrumbs = 
+  location.pathname === '/profile' ? [{ label: 'Профиль' }] :
+  location.pathname === '/companies/create' ? [
+    { label: 'Мои компании', to: '/companies' },
+    { label: 'Создать компанию' }
+  ] :location.pathname === '/companies/join'
+        ? [
+            { label: 'Мои компании', to: '/companies' },
+            { label: 'Вступить в компанию' }
+          ]
+        : [{ label: 'Мои компании' }]
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--bg)]">

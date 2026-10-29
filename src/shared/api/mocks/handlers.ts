@@ -128,4 +128,20 @@ http.get('/api/company/:id/dashboard', async ({ params }) => {
 http.get('/api/profile/security', async () => {
   return HttpResponse.json(db.profileSecurity)
 }),
+
+
+http.post('/api/companies/:id/join-requests', async ({ params, request }) => {
+  const body = await request.json() as { companyId: string }
+  const newRequest = {
+    uuid: uuidv4(),
+    company_id: String(params.id),
+    user_id: CURRENT_USER_ID,
+    status: 'SENDED',
+    created_at: new Date().toISOString(),
+    dateText: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) + ', ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+  }
+  db.joinRequests.push(newRequest as any)
+  return HttpResponse.json(newRequest, { status: 201 })
+}),
+
 ]
