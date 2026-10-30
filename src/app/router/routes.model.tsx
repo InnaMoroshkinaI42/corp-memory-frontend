@@ -7,7 +7,7 @@ import { CompanyLayout, MainLayout } from '@/app/layouts'  // <-- добавил
 import type { IRoute } from './types'
 import { CreateCompanyPage } from '@/pages/companies/CreateCompanyPage'
 import { JoinCompanyPage } from '@/pages/companies/JoinCompanyPage'
-
+import { MembersPage } from '@/pages/company-members/MembersPage'
 
 export const publicRoutes: IRoute[] = [
   { path: '/', element: <LandingPage /> },
@@ -31,6 +31,7 @@ export const protectedRoutes: IRoute[] = [
     element: <CompanyLayout />,
     children: [
       { path: 'overview/:id', element: <OverviewPage /> },
+      { path: 'members/:id', element: <MembersPage /> },
     ]
   }
 ]

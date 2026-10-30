@@ -1,4 +1,4 @@
-import { Outlet, useParams, NavLink, Link } from 'react-router-dom'
+import { Outlet, useParams, NavLink, Link, useLocation } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Header } from '@/shared/ui/Header'
 import { Footer } from '@/shared/ui/Footer'
@@ -17,8 +17,18 @@ const NAV_ITEMS = [
   { to: 'settings', icon: GearIcon, label: 'Настройки' },
 ]
 
+const PAGE_LABELS: Record<string, string> = {
+  overview: 'Обзор',
+  chats: 'Чаты',
+  documents: 'Документы',
+  decisions: 'Решения',
+  members: 'Участники',
+  settings: 'Настройки',
+}
+
 export function CompanyLayout() {
   const { id } = useParams()
+  const location = useLocation()
 
   const { data: company } = useQuery({
     queryKey: ['company', id],
@@ -34,7 +44,12 @@ export function CompanyLayout() {
   const companyName = company?.name || '...'
   const initials = user ? `${user.first_name[0]}${user.last_name[0]}` : '...'
 
-  if (!user) return <div>Загрузка...</div>
+  // Определяем текущую страницу по URL
+  const pathParts = location.pathname.split('/')
+  const currentPage = pathParts.length >= 2 ? pathParts[pathParts.length -2]: 'overview'
+  const pageLabel = PAGE_LABELS[currentPage] || 'Обзор'
+
+  if (!user) return <div className="p-8">Загрузка...</div>
 
   return (
     <div className="flex h-screen bg-[var(--bg)]">
@@ -113,7 +128,7 @@ export function CompanyLayout() {
           breadcrumbs={[
             { label: 'Мои компании', to: '/companies' },
             { label: companyName, to: `/app/overview/${id}` },
-            { label: 'Обзор' },
+            { label: pageLabel },
           ]}
           user={user}
         />
