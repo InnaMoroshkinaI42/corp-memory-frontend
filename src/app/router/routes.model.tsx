@@ -9,6 +9,8 @@ import { CreateCompanyPage } from "@/pages/companies/CreateCompanyPage";
 import { JoinCompanyPage } from "@/pages/companies/JoinCompanyPage";
 import { MembersPage } from "@/pages/company-members/MembersPage";
 import { SettingsPage } from "@/pages/company-settings/SettingsPage";
+import { CompanyWaitingPage } from '@/pages/companies/CompanyWaitingPage'
+
 
 export const publicRoutes: IRoute[] = [
   { path: "/", element: <LandingPage /> },
@@ -25,6 +27,7 @@ export const protectedRoutes: IRoute[] = [
       { path: "/companies", element: <CompaniesPage /> },
       { path: "/companies/create", element: <CreateCompanyPage /> },
       { path: "/companies/join", element: <JoinCompanyPage /> },
+      { path: '/companies/waiting', element: <CompanyWaitingPage /> },
     ],
   },
   {
