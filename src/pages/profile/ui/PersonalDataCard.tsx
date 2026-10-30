@@ -72,7 +72,7 @@ export function PersonalDataCard({ user }: PersonalDataCardProps) {
         </div>
 
         <div className="flex items-center gap-4 mt-2">
-          <Button className="bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-dark)]">Сохранить изменения</Button>
+          <Button >Сохранить изменения</Button>
           <span className="text-sm text-[var(--text-3)]">Последнее обновление: 6 октября</span>
         </div>
       </CardContent>

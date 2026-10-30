@@ -33,13 +33,13 @@ export function CompanyWaitingPage() {
         </div>
         <div className="flex gap-3">
           <Link to="/companies/join">
-            <Button variant="outline" className="gap-2">
+            <Button variant="outline">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
               Вступить в компанию
             </Button>
           </Link>
           <Link to="/companies/create">
-            <Button className="gap-2 bg-[var(--brand-primary)] hover:bg-[var(--brand-dark)] text-white">
+            <Button >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
               Создать компанию
             </Button>

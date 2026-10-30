@@ -2,7 +2,6 @@ import type { User, Company, Chat, ChatMessage, Document, CompanyJoinRequest } f
 
 export const CURRENT_USER_ID = 'u-1'
 
-// Расширяем типы (можно добавить в types/index.ts)
 export interface CompanyWithStats extends Company {}
 
 export const db = {

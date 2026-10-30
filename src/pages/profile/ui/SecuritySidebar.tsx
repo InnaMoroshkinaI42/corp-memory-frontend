@@ -3,6 +3,7 @@ import { Button } from "@/shared/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { CheckCircledIcon, DesktopIcon } from "@radix-ui/react-icons";
 import { Badge } from "@/shared/ui/badge";
+import { ExitIcon } from "@radix-ui/react-icons";
 
 export function SecuritySidebar() {
   const { data: security, isLoading } = useQuery({
@@ -86,6 +87,18 @@ export function SecuritySidebar() {
           </button>
         </CardContent>
       </Card>
+      <div className="flex justify-end gap-3 mt-8">
+          <Button
+            variant="ghost"
+            className="gap-2 text-[var(--danger)] hover:bg-[var(--danger-soft)]"
+            onClick={() => {
+              localStorage.removeItem("token");
+              window.location.href = "/login";
+            }}
+          >
+            <ExitIcon className="size-4" /> Выйти из аккаунта
+          </Button>
+        </div>
     </div>
   );
 }

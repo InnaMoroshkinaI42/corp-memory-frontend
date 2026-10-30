@@ -15,13 +15,13 @@ export function BillingTab() {
               <div className="text-2xl font-bold text-[var(--text)]">Team</div>
               <p className="text-sm text-[var(--text-3)]">2,4 из 10 ГБ использовано</p>
             </div>
-            <Badge variant="secondary" className="bg-[var(--success-soft)] text-[var(--success)]">Активен</Badge>
+            <Badge variant="secondary" className="text-[var(--success)]">Активен</Badge>
           </div>
           <div className="h-2 w-full rounded-full bg-[var(--surface-2)]">
             <div className="h-2 rounded-full bg-[var(--brand-primary)]" style={{ width: '24%' }} />
           </div>
           <div className="flex justify-end">
-            <Button className="bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-dark)]">
+            <Button >
               Управление тарифом
             </Button>
           </div>

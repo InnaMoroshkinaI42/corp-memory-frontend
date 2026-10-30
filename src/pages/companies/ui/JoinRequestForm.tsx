@@ -28,7 +28,7 @@ export function JoinRequestForm({ companyId, setCompanyId, company, isPending, i
           </div>
           <CheckCircledIcon className="size-5 text-[var(--success)]" />
         </div>
-        <Button disabled className="w-full bg-[var(--surface-2)] text-[var(--text-3)] h-11 gap-2">
+        <Button variant="secondary" disabled className="w-full h-11 gap-2">
           <CheckCircledIcon className="size-4" /> Запрос отправлен
         </Button>
         <p className="text-xs text-[var(--text-3)] text-center">Запрос отправлен 6 октября 2026, 09:40. Уведомление об одобрении придёт на email.</p>
@@ -82,7 +82,7 @@ export function JoinRequestForm({ companyId, setCompanyId, company, isPending, i
 
       <Button 
         type="submit" 
-        className="w-full h-11 bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-dark)]"
+        className="w-full h-11"
         disabled={!company || isPending}
       >
         {isPending ? 'Отправка...' : 'Отправить запрос'}

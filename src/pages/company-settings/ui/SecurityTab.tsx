@@ -54,7 +54,7 @@ export function SecurityTab() {
       </Card>
 
       <div className="flex justify-end">
-        <Button className="bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-dark)]">
+        <Button >
           Сохранить настройки безопасности
         </Button>
       </div>

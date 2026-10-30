@@ -40,7 +40,7 @@ export function MembersPage() {
           <h1 className="text-3xl font-bold text-[var(--text)]">Участники</h1>
           <p className="mt-2 text-[var(--text-2)]">Управляйте командой и доступом к памяти компании.</p>
         </div>
-        <Button className="gap-2 bg-[var(--brand-primary)] hover:bg-[var(--brand-dark)] text-white h-10 px-4">
+        <Button>
           <PlusIcon className="size-4" /> Пригласить участника
         </Button>
       </div>

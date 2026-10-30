@@ -34,7 +34,7 @@ export function InviteLinkCard({ companyId }: Props) {
             <CheckCircledIcon className="size-4 text-[var(--success)]" /> 
             Вступление по ссылке — только после одобрения владельцем.
           </div>
-          <Badge variant="secondary" className="bg-[var(--success-soft)] text-[var(--success)]">
+          <Badge variant="secondary" >
             Обязательно
           </Badge>
         </div>

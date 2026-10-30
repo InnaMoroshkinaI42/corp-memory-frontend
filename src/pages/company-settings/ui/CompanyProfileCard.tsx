@@ -30,7 +30,7 @@ export function CompanyProfileCard({ company }: Props) {
             <Label htmlFor="domain">Рабочий домен</Label>
             <Input id="domain" defaultValue={`${company.name.toLowerCase()}.team`} />
           </div>
-          <Button className="bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-dark)] mt-2">
+          <Button >
             Сохранить изменения
           </Button>
         </CardContent>
@@ -52,7 +52,7 @@ export function CompanyProfileCard({ company }: Props) {
             </Button>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="bg-[var(--brand-light)] text-[var(--brand-primary)] rounded-full">
+            <Badge variant="secondary" className="bg-[var(--brand-light)] text-[var(--brand-primary)]">
               Владелец: {company.owner_name || 'Алексей Морозов'}
             </Badge>
           </div>

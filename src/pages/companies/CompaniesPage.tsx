@@ -10,7 +10,7 @@ import { Button } from "@/shared/ui/button";
 import { Badge } from "@/shared/ui/badge";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { Link } from "react-router-dom";
-import type { Company, CompanyJoinRequest } from "@/shared/api/types";
+import type { Company } from "@/shared/api/types";
 
 interface JoinRequest {
   uuid: string;
@@ -66,12 +66,12 @@ export function CompaniesPage() {
           </div>
           <div className="flex gap-3">
             <Link to="/companies/join">
-              <Button variant="outline" className="gap-2">
+              <Button variant="outline">
                 <Link2Icon className="size-4" /> Вступить в компанию
               </Button>
             </Link>
             <Link to="/companies/create">
-              <Button className="gap-2 bg-[var(--brand-primary)] hover:bg-[var(--brand-dark)] text-white">
+              <Button>
                 <PlusIcon className="size-4" /> Создать компанию
               </Button>
             </Link>
@@ -99,7 +99,7 @@ export function CompaniesPage() {
                   </div>
                   <Badge
                     variant="secondary"
-                    className="bg-[var(--brand-light)] text-[var(--brand-primary)] rounded-full"
+                    className=" text-[var(--brand-primary)]"
                   >
                     {company.owner_id === "u-1" ? "Владелец" : "Участник"}
                   </Badge>
@@ -129,7 +129,7 @@ export function CompaniesPage() {
                     Открыта {company.lastActive}
                   </span>
                   <Link to={`/app/overview/${company.uuid}`}>
-                    <Button className="bg-[var(--brand-primary)] hover:bg-[var(--brand-dark)] text-white gap-2">
+                    <Button>
                       <ArrowRightIcon className="size-4" /> Открыть компанию
                     </Button>
                   </Link>
@@ -172,7 +172,9 @@ export function CompaniesPage() {
                       <div className="size-1.5 rounded-full bg-[var(--warn)] mr-1.5" />{" "}
                       Ожидает подтверждения
                     </Badge>
-                    <Button variant="outline">Рассмотреть запрос</Button>
+                    <Link to={`/app/members/${req.company_id}`}>
+                      <Button variant="outline">Рассмотреть запрос</Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

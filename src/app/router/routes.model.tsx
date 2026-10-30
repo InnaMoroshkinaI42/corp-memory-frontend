@@ -10,7 +10,8 @@ import { JoinCompanyPage } from "@/pages/companies/JoinCompanyPage";
 import { MembersPage } from "@/pages/company-members/MembersPage";
 import { SettingsPage } from "@/pages/company-settings/SettingsPage";
 import { CompanyWaitingPage } from '@/pages/companies/CompanyWaitingPage'
-
+import { DocumentsPage } from '@/pages/documents/DocumentsPage'
+import { UploadDocumentPage } from '@/pages/documents/UploadDocumentPage'
 
 export const publicRoutes: IRoute[] = [
   { path: "/", element: <LandingPage /> },
@@ -37,6 +38,8 @@ export const protectedRoutes: IRoute[] = [
       { path: "overview/:id", element: <OverviewPage /> },
       { path: "members/:id", element: <MembersPage /> },
       { path: "settings/:id", element: <SettingsPage /> },
+      { path: 'documents/upload/:id', element: <UploadDocumentPage /> },
+      { path: 'documents/:id', element: <DocumentsPage /> },
     ],
   },
 ];

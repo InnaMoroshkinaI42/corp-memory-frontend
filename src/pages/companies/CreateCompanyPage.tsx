@@ -53,7 +53,7 @@ export function CreateCompanyPage() {
           </p>
         </div>
         <Link to="/companies">
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline">
             <ArrowLeftIcon className="size-4" /> К моим компаниям
           </Button>
         </Link>
@@ -101,7 +101,6 @@ export function CreateCompanyPage() {
               <div className="flex items-center gap-4 pt-4">
                 <Button
                   type="submit"
-                  className="bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-dark)] gap-2"
                   disabled={mutation.isPending}
                 >
                   <PlusIcon className="size-4" /> {mutation.isPending ? 'Создание...' : 'Создать компанию'}

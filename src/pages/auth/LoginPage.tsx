@@ -52,7 +52,7 @@ export function LoginPage() {
               </Link>
             </div>
 
-            <Button type="submit" size="lg" className="w-full h-11 mt-2 bg-[var(--brand-primary)] hover:bg-[var(--brand-dark)] text-white">
+            <Button type="submit" size="lg" className="w-full h-11 mt-2">
               <ArrowRightIcon className="mr-2 size-4" />
               Войти
             </Button>

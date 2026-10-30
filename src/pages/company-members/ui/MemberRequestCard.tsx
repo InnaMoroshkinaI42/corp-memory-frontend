@@ -37,11 +37,11 @@ export function MemberRequestCard({ requests, onApprove }: Props) {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Badge variant="secondary" className="bg-[var(--warn-soft)] text-[var(--warn)] rounded-full px-3 py-1">
+              <Badge variant="secondary" className="bg-[var(--warn-soft)] text-[var(--warn)]">
                 <div className="size-1.5 rounded-full bg-[var(--warn)] mr-1.5" /> Ожидает подтверждения
               </Badge>
-              <Button variant="outline" className="h-9 px-4">Отклонить</Button>
-              <Button className="h-9 px-4 bg-[var(--brand-primary)] hover:bg-[var(--brand-dark)] text-white gap-2" onClick={() => onApprove(req.uuid)}>
+              <Button variant="outline" >Отклонить</Button>
+              <Button onClick={() => onApprove(req.uuid)}>
                 <CheckIcon className="size-4" /> Одобрить
               </Button>
             </div>

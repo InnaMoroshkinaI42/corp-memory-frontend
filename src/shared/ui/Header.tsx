@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { QuestionMarkCircledIcon, LayersIcon } from "@radix-ui/react-icons";
-import { Avatar, AvatarFallback } from "./avatar";
+import { Link } from 'react-router-dom'
+import { QuestionMarkCircledIcon, LayersIcon } from '@radix-ui/react-icons'
+import { Avatar, AvatarFallback } from './avatar'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,41 +8,37 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "./breadcrumb";
-import * as React from "react";
+} from './breadcrumb'
+import React from 'react'
 
 interface HeaderProps {
-  breadcrumbs: { label: string; to?: string }[];
-  user: { first_name: string; last_name: string };
+  breadcrumbs: { label: string; to?: string }[]
+  user: { first_name: string; last_name: string }
+  showLogo?: boolean
 }
 
-export function Header({ breadcrumbs, user }: HeaderProps) {
-  const initials = `${user.first_name[0]}${user.last_name[0]}`;
-  const today = new Date().toLocaleDateString("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+export function Header({ breadcrumbs, user, showLogo = false }: HeaderProps) {
+  const initials = `${user.first_name[0]}${user.last_name[0]}`
+  const today = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
 
   return (
     <header className="flex h-16 items-center justify-between border-b border-[var(--border)] bg-white px-8">
       <div className="flex items-center gap-8">
-        <Link to="/companies" className="flex items-center gap-2">
-          <div className="grid size-8 place-items-center rounded-lg bg-[var(--brand-primary)]">
-            <LayersIcon className="size-5 text-white" />
-          </div>
-          <b className="text-lg tracking-tight text-[var(--text)]">MeetMind</b>
-        </Link>
+        {/* Логотип — только если showLogo === true (для страниц без сайдбара) */}
+        {showLogo && (
+          <Link to="/companies" className="flex items-center gap-2">
+            <div className="grid size-8 place-items-center rounded-lg bg-[var(--brand-primary)]">
+              <LayersIcon className="size-5 text-white" />
+            </div>
+            <b className="text-lg tracking-tight text-[var(--text)]">MeetMind</b>
+          </Link>
+        )}
 
         <Breadcrumb>
           <BreadcrumbList>
             {breadcrumbs.map((item, i) => (
               <React.Fragment key={i}>
-                {i > 0 && (
-                  <BreadcrumbSeparator className="text-[var(--text-3)]">
-                    /
-                  </BreadcrumbSeparator>
-                )}
+                {i > 0 && <BreadcrumbSeparator className="text-[var(--text-3)]">/</BreadcrumbSeparator>}
                 <BreadcrumbItem>
                   {item.to ? (
                     <BreadcrumbLink asChild>
@@ -61,10 +57,7 @@ export function Header({ breadcrumbs, user }: HeaderProps) {
       <div className="flex items-center gap-4">
         <span className="text-sm text-[var(--text-2)]">{today}</span>
         <QuestionMarkCircledIcon className="size-5 text-[var(--text-3)]" />
-        <Link
-          to="/profile"
-          className="text-sm font-medium text-[var(--text-2)] hover:text-[var(--text)]"
-        >
+        <Link to="/profile" className="text-sm font-medium text-[var(--text-2)] hover:text-[var(--text)]">
           Личный профиль
         </Link>
         <Avatar className="size-8">
@@ -74,5 +67,5 @@ export function Header({ breadcrumbs, user }: HeaderProps) {
         </Avatar>
       </div>
     </header>
-  );
+  )
 }

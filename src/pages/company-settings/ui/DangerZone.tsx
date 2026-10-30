@@ -9,7 +9,7 @@ export function DangerZone() {
           <div className="font-semibold text-[var(--text)]">Удаление компании</div>
           <div className="text-sm text-[var(--text-2)] mt-1">Все документы, чаты и решения будут удалены без возможности восстановления.</div>
         </div>
-        <Button variant="destructive" className="bg-[var(--danger)] text-white hover:bg-red-700">Удалить компанию</Button>
+        <Button variant="destructive">Удалить компанию</Button>
       </CardContent>
     </Card>
   )

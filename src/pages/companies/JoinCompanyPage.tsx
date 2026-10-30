@@ -59,7 +59,7 @@ export function JoinCompanyPage() {
           </p>
         </div>
         <Link to="/companies">
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline">
             <ArrowLeftIcon className="size-4" /> К моим компаниям
           </Button>
         </Link>

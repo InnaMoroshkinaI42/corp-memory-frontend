@@ -20,7 +20,7 @@ export function JoinStatusCard({ isSent, companyName, ownerName, onCancel }: Pro
         <h3 className="text-xl font-bold text-[var(--text)] mb-2">Ожидает подтверждения</h3>
         
         {isSent && (
-          <Badge className="mb-4 bg-[var(--warn-soft)] text-[var(--warn)] rounded-full">
+          <Badge className="mb-4 ">
             <div className="size-1.5 rounded-full bg-[var(--warn)] mr-1.5" /> Запрос в «{companyName}»
           </Badge>
         )}

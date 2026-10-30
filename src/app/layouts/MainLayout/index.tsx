@@ -26,7 +26,7 @@ const breadcrumbs =
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--bg)]">
-      <Header breadcrumbs={breadcrumbs} user={user} />
+      <Header breadcrumbs={breadcrumbs} user={user} showLogo={true}/>
       <main className="flex-1"><Outlet /></main>
       <Footer />
     </div>

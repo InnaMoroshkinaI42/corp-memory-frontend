@@ -46,7 +46,7 @@ export function RegisterPage() {
               </span>
             </label>
 
-            <Button type="submit" size="lg" className="w-full h-11 mt-2 bg-[var(--brand-primary)] hover:bg-[var(--brand-dark)] text-white">
+            <Button type="submit" size="lg" className="w-full h-11 mt-2">
               Создать аккаунт
               <ArrowRightIcon className="ml-2 size-4" />
             </Button>

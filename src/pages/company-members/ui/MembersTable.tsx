@@ -41,12 +41,12 @@ export function MembersTable({ members }: { members: any[] }) {
               </TableCell>
               <TableCell className="text-sm text-[var(--text-2)]">1 окт 2026</TableCell>
               <TableCell>
-                <Badge variant="secondary" className="bg-[var(--success-soft)] text-[var(--success)] rounded-full">
+                <Badge variant="secondary" className="text-[var(--success)]">
                   <div className="size-1.5 rounded-full bg-[var(--success)] mr-1.5" /> Активен
                 </Badge>
               </TableCell>
               <TableCell className="text-right">
-                <Button variant="ghost" size="icon" className="text-[var(--text-3)]">
+                <Button variant="ghost" size="icon" >
                   <DotsHorizontalIcon className="size-4" />
                 </Button>
               </TableCell>

@@ -22,7 +22,7 @@ export function Hero() {
           </p>
           <div className="mt-10 flex gap-4">
             <Link to="/register">
-              <Button size="lg" className="bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-dark)] h-12 px-6">
+              <Button size="lg" className="h-12 px-6">
                 <ArrowRightIcon className="mr-2 size-4" /> Создать компанию
               </Button>
             </Link>

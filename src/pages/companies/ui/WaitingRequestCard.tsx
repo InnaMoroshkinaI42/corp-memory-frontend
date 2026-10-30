@@ -24,7 +24,7 @@ export function WaitingRequestCard({ company, request, ownerName }: Props) {
               <div className="text-xs text-[var(--text-3)]">{company?.industry} · {company?.uuid}</div>
             </div>
           </div>
-          <Badge variant="secondary" className="bg-[var(--warn-soft)] text-[var(--warn)] rounded-full">
+          <Badge variant="secondary" className="text-[var(--warn)]">
             <div className="size-1.5 rounded-full bg-[var(--warn)] mr-1.5" /> Ожидает подтверждения
           </Badge>
         </div>
@@ -43,7 +43,7 @@ export function WaitingRequestCard({ company, request, ownerName }: Props) {
         </div>
 
         <div className="flex items-center gap-3 mt-6">
-          <Button disabled className="gap-2 bg-[var(--surface-2)] text-[var(--text-3)]">
+          <Button disabled>
             <LockClosedIcon className="size-4" /> Доступ ещё не открыт
           </Button>
           <Button variant="outline">Отменить запрос</Button>
