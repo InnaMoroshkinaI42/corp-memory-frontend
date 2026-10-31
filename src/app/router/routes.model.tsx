@@ -15,6 +15,7 @@ import { UploadDocumentPage } from '@/pages/documents/UploadDocumentPage'
 import { ChatsPage } from '@/pages/chats/ChatsPage'
 import { DecisionsPage } from '@/pages/decisions/DecisionsPage'
 import { DocumentDetailPage } from '@/pages/documents/DocumentDetailPage'
+import { SupportPage } from '@/pages/support/SupportPage'
 
 export const publicRoutes: IRoute[] = [
   { path: "/", element: <LandingPage /> },
@@ -32,6 +33,7 @@ export const protectedRoutes: IRoute[] = [
       { path: "/companies/create", element: <CreateCompanyPage /> },
       { path: "/companies/join", element: <JoinCompanyPage /> },
       { path: '/companies/waiting', element: <CompanyWaitingPage /> },
+      { path: '/support', element: <SupportPage /> },
     ],
   },
   {

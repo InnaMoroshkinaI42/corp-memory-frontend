@@ -11,11 +11,7 @@ export function GoogleButton({ className, children, ...props }: ButtonHTMLAttrib
       )}
       {...props}
     >
-      <img 
-        src="https://www.svgrepo.com/show/475656/google-color.svg" 
-        alt="Google" 
-        className="size-[18px]" 
-      />
+      <img src="/icons8-google-48.png" alt="Google" className="size-[18px]" />
       {children}
     </button>
   )

@@ -79,9 +79,11 @@ export function OverviewPage() {
             </div>
           </div>
         </div>
+        <Link to={`/app/chats/${id}`}>
         <Button className="bg-white text-[var(--brand-primary)] hover:bg-gray-50 border border-[var(--border)] gap-2">
           <ChatBubbleIcon className="size-4" /> Спросить MeetMind
         </Button>
+        </Link>
       </div>
 
       {/* Метрики */}

@@ -68,9 +68,9 @@ export function CompanyLayout() {
   const companyName = company?.name || "...";
   const initials = user ? `${user.first_name[0]}${user.last_name[0]}` : "...";
 
-  const pathParts = location.pathname.split('/').filter(Boolean)
-  const pageSegment = pathParts.find((p) => p in PAGE_LABELS)
-  const pageLabel = pageSegment ? PAGE_LABELS[pageSegment] : 'Обзор'
+  const pathParts = location.pathname.split("/").filter(Boolean);
+  const pageSegment = pathParts.find((p) => p in PAGE_LABELS);
+  const pageLabel = pageSegment ? PAGE_LABELS[pageSegment] : "Обзор";
 
   if (!user) return <div className="p-8">Загрузка...</div>;
 
@@ -195,15 +195,13 @@ export function CompanyLayout() {
 
         {/* Помощь и поддержка */}
         <div className="border-t border-[var(--border)] p-2">
-          <button
-            className={cn(
-              "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[var(--text-2)] hover:bg-[var(--surface-2)] hover:text-[var(--text)]",
-              !isSidebarOpen && "justify-center px-0",
-            )}
+          <Link
+            to="/support"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[var(--text-2)] hover:bg-[var(--surface-2)] hover:text-[var(--text)]"
           >
             <QuestionMarkCircledIcon className="size-4 shrink-0" />
             {isSidebarOpen && <span>Помощь и поддержка</span>}
-          </button>
+          </Link>
         </div>
 
         {/* Пользователь */}

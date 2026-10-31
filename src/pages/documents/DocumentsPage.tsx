@@ -13,23 +13,38 @@ export function DocumentsPage() {
   const { id } = useParams()
   const [selectedIds, setSelectedIds] = useState<string[]>([])
 
-  // Запрос на документы
+  // Запросы
   const { data: documents, isLoading: docsLoading } = useQuery({
     queryKey: ['documents', id],
     queryFn: () => fetch(`/api/companies/${id}/documents`).then(r => r.json()),
     enabled: !!id,
   })
 
-  // Запрос на компанию (для названия)
   const { data: company, isLoading: companyLoading } = useQuery({
     queryKey: ['company', id],
     queryFn: () => fetch(`/api/companies/${id}`).then(r => r.json()),
     enabled: !!id,
   })
 
+  // Состояния фильтров и пагинации (ДО раннего return)
+  const [page, setPage] = useState(1)
+  const [typeFilter, setTypeFilter] = useState('Все')
+  const [statusFilter, setStatusFilter] = useState('Все')
+  const pageSize = 9
+
   if (docsLoading || companyLoading) return <div className="p-8">Загрузка...</div>
 
-  const count = documents?.length || 0
+  // Фильтрация
+  const filtered = (documents || []).filter((doc: any) => {
+    if (typeFilter !== 'Все' && !doc.mime_type?.includes(typeFilter.toLowerCase())) return false
+    if (statusFilter !== 'Все' && doc.status !== statusFilter) return false
+    return true
+  })
+
+  // Пагинация
+  const totalPages = Math.ceil(filtered.length / pageSize)
+  const paginated = filtered.slice((page - 1) * pageSize, page * pageSize)
+  const count = filtered.length
 
   const toggleSelect = (uuid: string) => {
     setSelectedIds(prev =>
@@ -57,7 +72,7 @@ export function DocumentsPage() {
           </p>
         </div>
         <Link to={`/app/documents/upload/${id}`}>
-          <Button >
+          <Button>
             <PlusIcon className="size-4" /> Загрузить документ
           </Button>
         </Link>
@@ -70,7 +85,7 @@ export function DocumentsPage() {
             Выбрано: {selectedIds.length}
           </span>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" >
+            <Button variant="outline" size="sm">
               <DownloadIcon className="size-4" /> Скачать
             </Button>
             <Button variant="outline" size="sm" className="gap-2 border-[var(--danger)]/20 bg-white text-[var(--danger)] hover:bg-[var(--danger-soft)]">
@@ -80,10 +95,16 @@ export function DocumentsPage() {
         </div>
       )}
 
-      {/* Тулбар (поиск, фильтры) */}
-      <DocumentToolbar count={count} />
+      {/* Тулбар: поиск + фильтры */}
+      <DocumentToolbar
+        count={count}
+        typeFilter={typeFilter}
+        setTypeFilter={setTypeFilter}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+      />
 
-      {/* Таблица */}
+      {/* Таблица (только текущая страница) */}
       <Card className="overflow-hidden">
         <Table>
           <TableHeader>
@@ -105,9 +126,9 @@ export function DocumentsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {documents?.map((doc: any) => (
-              <DocumentRow 
-                key={doc.uuid} 
+            {paginated.map((doc: any) => (
+              <DocumentRow
+                key={doc.uuid}
                 doc={doc}
                 isSelected={selectedIds.includes(doc.uuid)}
                 onToggle={() => toggleSelect(doc.uuid)}
@@ -121,7 +142,13 @@ export function DocumentsPage() {
       </Card>
 
       {/* Пагинация */}
-      <DocumentPagination total={count} currentPage={1} pageSize={9} />
+      <DocumentPagination
+        total={count}
+        currentPage={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
 
       {/* Подпись */}
       <div className="mt-8 flex items-center gap-2 text-xs text-[var(--text-3)]">

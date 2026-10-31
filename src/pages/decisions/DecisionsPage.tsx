@@ -34,7 +34,7 @@ export function DecisionsPage() {
                 <div>
                   <div className="font-semibold text-[var(--text)]">{decision.text}</div>
                   <a
-                    href={`/app/documents/${id}`}
+                    href={`/app/documents/${id}/${decision.source_doc_id}`}
                     className="mt-2 inline-flex items-center gap-1.5 text-xs text-[var(--brand-primary)] hover:underline"
                   >
                     <FileTextIcon className="size-3.5" /> {decision.source_doc_name}

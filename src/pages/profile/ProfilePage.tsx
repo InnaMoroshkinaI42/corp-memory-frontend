@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query'
 import { PersonalDataCard } from './ui/PersonalDataCard'
 import { NotificationsCard } from './ui/NotificationsCard'
 import { SecuritySidebar } from './ui/SecuritySidebar'
-import { ExitIcon } from '@radix-ui/react-icons'
 
 interface Profile {
   uuid: string
