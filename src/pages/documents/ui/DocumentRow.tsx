@@ -2,6 +2,7 @@ import { FileTextIcon, PlayIcon, DotsHorizontalIcon, UpdateIcon } from '@radix-u
 import { Button } from '@/shared/ui/button'
 import { Badge } from '@/shared/ui/badge'
 import { TableCell, TableRow } from '@/shared/ui/table'
+import { Link } from 'react-router-dom'
 
 interface Props {
   doc: any
@@ -41,9 +42,9 @@ export function DocumentRow({ doc, isSelected, onToggle }: Props) {
           </div>
           <div>
             {/* Имя файла: если нет original_name, берём mime_type */}
-            <div className="font-semibold text-[var(--text)]">
+            <Link to={`/app/documents/${doc.company_id}/${doc.uuid}`} className="font-semibold text-[var(--text)] hover:text-[var(--brand-primary)]">
               {doc.original_name || doc.mime_type?.split('/')[1]?.toUpperCase() || 'Без названия'}
-            </div>
+            </Link>
             <div className="text-xs text-[var(--text-3)]">{doc.uuid}</div>
           </div>
         </div>

@@ -68,10 +68,9 @@ export function CompanyLayout() {
   const companyName = company?.name || "...";
   const initials = user ? `${user.first_name[0]}${user.last_name[0]}` : "...";
 
-  const pathParts = location.pathname.split("/");
-  const currentPage =
-    pathParts.length >= 2 ? pathParts[pathParts.length - 2] : "overview";
-  const pageLabel = PAGE_LABELS[currentPage] || "Обзор";
+  const pathParts = location.pathname.split('/').filter(Boolean)
+  const pageSegment = pathParts.find((p) => p in PAGE_LABELS)
+  const pageLabel = pageSegment ? PAGE_LABELS[pageSegment] : 'Обзор'
 
   if (!user) return <div className="p-8">Загрузка...</div>;
 

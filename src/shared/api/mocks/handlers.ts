@@ -184,4 +184,15 @@ http.post('/api/chats/:id/ai-messages', async ({ params, request }) => {
   db.chatMessages.push(msg)
   return HttpResponse.json(msg, { status: 201 })
 }),
+
+http.get('/api/companies/:id/decisions', async ({ params }) => {
+  const decisions = db.decisions.filter(d => d.company_id === params.id)
+  return HttpResponse.json(decisions)
+}),
+
+http.get('/api/documents/:id', async ({ params }) => {
+  const doc = db.documents.find(d => d.uuid === params.id)
+  if (!doc) return new HttpResponse(null, { status: 404 })
+  return HttpResponse.json(doc)
+}),
 ]
