@@ -52,7 +52,6 @@ export const handlers = [
   }),
 
   // --- Chats ---
-  http.get('/api/chats', async () => HttpResponse.json(db.chats)),
   http.get('/api/chats/:id/messages', async ({ params }) =>
     HttpResponse.json(db.chatMessages.filter(m => m.chat_id === params.id))),
   http.post('/api/chats/:id/messages', async ({ params, request }) => {
@@ -148,4 +147,41 @@ export const handlers = [
     if (!dashboard) return new HttpResponse(null, { status: 404 })
     return HttpResponse.json(dashboard)
   }),
+
+
+  http.get('/api/chats', async ({ request }) => {
+  const url = new URL(request.url)
+  const companyId = url.searchParams.get('companyId')
+  const filtered = companyId ? db.chats.filter(c => c.company_id === companyId) : db.chats
+  return HttpResponse.json(filtered)
+}),
+
+http.post('/api/chats', async ({ request }) => {
+  const body = await request.json() as { company_id: string; title: string }
+  const newChat = {
+    uuid: uuidv4(),
+    company_id: body.company_id,
+    user_id: CURRENT_USER_ID,
+    title: body.title || 'Новый диалог',
+    created_at: new Date().toISOString(),
+  }
+  db.chats.push(newChat)
+  return HttpResponse.json(newChat, { status: 201 })
+}),
+
+http.post('/api/chats/:id/ai-messages', async ({ params, request }) => {
+  const body = await request.json() as { content: string }
+  const msg: ChatMessage = {
+    uuid: uuidv4(),
+    chat_id: String(params.id),
+    role: 'AI',
+    content: body.content,
+    created_at: new Date().toISOString(),
+    sources: [
+      { docId: 'd-1', label: 'Планирование запуска Atlas', quote: '«Фиксируем запуск Atlas на 20 октября»', timestamp: '12:40' },
+    ],
+  }
+  db.chatMessages.push(msg)
+  return HttpResponse.json(msg, { status: 201 })
+}),
 ]

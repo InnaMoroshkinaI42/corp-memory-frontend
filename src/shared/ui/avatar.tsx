@@ -40,13 +40,18 @@ function AvatarImage({
 
 function AvatarFallback({
   className,
+  variant = 'default',
   ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
+}: React.ComponentProps<typeof AvatarPrimitive.Fallback> & {
+  variant?: 'default' | 'brand'
+}) {
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
       className={cn(
-        "flex size-full items-center justify-center rounded-full bg-muted text-sm text-muted-foreground group-data-[size=sm]/avatar:text-xs",
+        "flex size-full items-center justify-center rounded-full text-sm",
+        variant === 'default' && 'bg-muted text-muted-foreground',
+        variant === 'brand' && 'bg-[var(--brand-light)] text-[var(--brand-primary)] font-bold',
         className
       )}
       {...props}

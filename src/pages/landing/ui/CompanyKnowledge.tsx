@@ -78,8 +78,8 @@ export function CompanyKnowledge() {
               {/* Карточка с запросом */}
               <div className="mt-4 flex items-center justify-between rounded-lg bg-white p-3 border border-[var(--border)] shadow-sm">
                 <div className="flex items-center gap-3">
-                  <Avatar className="size-8 bg-[var(--brand-light)]">
-                    <AvatarFallback className="text-[var(--brand-primary)] text-xs font-bold">ЕС</AvatarFallback>
+                  <Avatar >
+                    <AvatarFallback variant="brand">ЕС</AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="text-sm font-semibold text-[var(--text)]">Елена запрашивает доступ</div>

@@ -23,8 +23,8 @@ export function MembersTable({ members }: { members: any[] }) {
             <TableRow key={member.uuid}>
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <Avatar className="size-8 bg-[var(--brand-light)]">
-                    <AvatarFallback className="text-[var(--brand-primary)] text-xs font-bold">
+                  <Avatar >
+                    <AvatarFallback variant="brand">
                       {member.first_name[0]}{member.last_name[0]}
                     </AvatarFallback>
                   </Avatar>

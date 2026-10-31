@@ -41,6 +41,13 @@ export interface ChatMessage {
   role: ChatMessageAuthor
   content: string
   created_at: string
+  sources?: Array<{       
+    docId: string
+    label: string
+    quote: string
+    timestamp?: string   
+  }>
+  tasks?: any[] 
 }
 
 export interface Document {

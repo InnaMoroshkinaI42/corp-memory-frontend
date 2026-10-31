@@ -9,8 +9,8 @@ export function JoinProfileHeader({ user }: Props) {
   
   return (
     <div className="flex items-center gap-3 mb-6 pb-6 border-b border-[var(--border)]">
-      <Avatar className="size-10 bg-[var(--brand-light)]">
-        <AvatarFallback className="text-[var(--brand-primary)] text-sm font-bold">{initials}</AvatarFallback>
+      <Avatar >
+        <AvatarFallback variant="brand">{initials}</AvatarFallback>
       </Avatar>
       <div>
         <div className="font-semibold text-[var(--text)]">{user.first_name} {user.last_name}</div>

@@ -61,7 +61,7 @@ export function Header({ breadcrumbs, user, showLogo = false }: HeaderProps) {
           Личный профиль
         </Link>
         <Avatar className="size-8">
-          <AvatarFallback className="bg-[var(--brand-light)] text-[var(--brand-primary)] text-xs font-bold">
+          <AvatarFallback variant="brand">
             {initials}
           </AvatarFallback>
         </Avatar>

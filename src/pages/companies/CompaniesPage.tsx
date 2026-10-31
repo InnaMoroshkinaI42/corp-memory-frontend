@@ -85,9 +85,11 @@ export function CompaniesPage() {
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="grid size-12 place-items-center rounded-xl bg-[var(--brand-primary)] text-white text-lg font-bold">
-                      {company.name[0]}
-                    </div>
+                    <Avatar size="lg">
+                      <AvatarFallback variant="brand">
+                        {company.name[0]}
+                      </AvatarFallback>
+                    </Avatar>
                     <div>
                       <div className="text-xl font-bold text-[var(--text)]">
                         {company.name}
@@ -149,8 +151,8 @@ export function CompaniesPage() {
               <Card key={req.uuid} className="shadow-sm mb-3">
                 <CardContent className="flex items-center justify-between p-4">
                   <div className="flex items-center gap-4">
-                    <Avatar className="size-10 bg-[var(--brand-light)]">
-                      <AvatarFallback className="text-[var(--brand-primary)] text-xs font-bold">
+                    <Avatar >
+                      <AvatarFallback variant="brand">
                         {req.user_name
                           .split(" ")
                           .map((n: string) => n[0])

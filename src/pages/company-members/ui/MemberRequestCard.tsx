@@ -24,8 +24,8 @@ export function MemberRequestCard({ requests, onApprove }: Props) {
         {requests.map((req) => (
           <div key={req.uuid} className="flex items-center justify-between px-6 py-4 border-t border-[var(--border)]">
             <div className="flex items-center gap-3">
-              <Avatar className="size-9 bg-[var(--brand-light)]">
-                <AvatarFallback className="text-[var(--brand-primary)] text-xs font-bold">
+              <Avatar >
+                <AvatarFallback variant="brand">
                   {req.initials}
                 </AvatarFallback>
               </Avatar>

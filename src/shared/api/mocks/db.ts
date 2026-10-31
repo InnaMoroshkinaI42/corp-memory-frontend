@@ -69,13 +69,34 @@ export const db = {
 
   chats: [
     { uuid: 'ch-1', company_id: 'c-1', user_id: 'u-1', title: 'Ключевые решения за сентябрь', created_at: new Date().toISOString() },
-    { uuid: 'ch-2', company_id: 'c-2', user_id: 'u-2', title: 'Планы по ритейлу', created_at: new Date().toISOString() },
   ] as Chat[],
 
-  chatMessages: [
-    { uuid: 'm-1', chat_id: 'ch-1', role: 'USER', content: 'Какие решения были приняты по онбордингу?', created_at: new Date().toISOString() },
-    { uuid: 'm-2', chat_id: 'ch-1', role: 'AI', content: 'Онбординг корпоративного клиента сокращён с 14 до 6 дней. Введён ролевой доступ.', created_at: new Date().toISOString() },
-  ] as ChatMessage[],
+chatMessages: [
+  {
+  uuid: 'm-1', 
+  chat_id: 'ch-1', 
+  role: 'USER', 
+  content: 'Что решили по запуску Atlas и кто за что отвечает?', 
+  created_at: new Date().toISOString() 
+},
+{
+  uuid: 'm-2', 
+  chat_id: 'ch-1', 
+  role: 'AI', 
+  content: 'На встрече 5 октября команда согласовала сроки и приоритеты первого релиза Atlas. Вот основные договорённости:\n\n• Сроки запуска. Пилот для 10 клиентов — 12 октября 2026, публичный запуск — 20 октября. [1]\n• Объём релиза. Приоритет — поиск по источникам. Экспорт в CRM перенесён на следующий этап. [2]',
+  created_at: new Date().toISOString(),
+  sources: [
+    { docId: 'd-1', label: 'Планирование запуска Atlas', quote: '«Фиксируем запуск Atlas на 20 октября. Пилот для десяти клиентов начинаем 12 октября.»', timestamp: '12:40' },
+    { docId: 'd-1', label: 'Планирование запуска Atlas', quote: '«Приоритет релиза — поиск по источникам. Экспорт в CRM переносим на следующий этап. План запуска подготовлю к 9 октября.»', timestamp: '18:15' },
+    { docId: 'd-1', label: 'Планирование запуска Atlas', quote: '«Проверю готовность аналитики к 8 октября. Анна, обнови FAQ для продаж к 7 октября.»', timestamp: '26:10' }
+  ],
+  tasks: [
+    { id: 't-1', title: 'Подготовить план запуска', assignee: 'Мария Крылова', due: '9 октября', sourceIndex: 2 },
+    { id: 't-2', title: 'Проверить готовность аналитики', assignee: 'Илья Волков', due: '8 октября', sourceIndex: 3 },
+    { id: 't-3', title: 'Обновить FAQ для продаж', assignee: 'Анна Лебедева', due: '7 октября', sourceIndex: 3 }
+  ]
+},
+] as ChatMessage[],
 
   joinRequests: [
     { 

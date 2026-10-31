@@ -16,9 +16,7 @@ export function WaitingRequestCard({ company, request, ownerName }: Props) {
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="grid size-12 place-items-center rounded-xl bg-[var(--brand-light)] text-xl font-bold text-[var(--brand-primary)]">
-              {company?.name?.[0] || 'C'}
-            </div>
+            <Avatar size="lg"><AvatarFallback variant="brand">{company.name[0]}</AvatarFallback></Avatar>
             <div>
               <div className="text-xl font-bold text-[var(--text)]">{company?.name || 'Компания'}</div>
               <div className="text-xs text-[var(--text-3)]">{company?.industry} · {company?.uuid}</div>
@@ -33,8 +31,8 @@ export function WaitingRequestCard({ company, request, ownerName }: Props) {
           <div className="text-sm text-[var(--text-2)]">Запрос отправлен {request?.dateText || '6 октября 2026, 09:40'}</div>
           <div className="text-sm italic text-[var(--text-3)]">«Присоединяюсь к команде как дизайнер.»</div>
           <div className="flex items-center gap-2 text-xs text-[var(--text-2)]">
-            <Avatar className="size-5 bg-[var(--surface-2)]">
-              <AvatarFallback className="text-[8px] text-[var(--text-2)]">
+            <Avatar >
+              <AvatarFallback variant="brand">
                 {ownerName ? ownerName.split(' ').map((n: string) => n[0]).join('') : 'АС'}
               </AvatarFallback>
             </Avatar>

@@ -23,7 +23,7 @@ export function PersonalDataCard({ user }: PersonalDataCardProps) {
       <CardContent className="grid gap-6">
         <div className="flex items-center gap-6">
           <Avatar className="size-20">
-            <AvatarFallback className="bg-[var(--brand-light)] text-[var(--brand-primary)] text-2xl font-bold">
+            <AvatarFallback variant="brand">
               {initials}
             </AvatarFallback>
           </Avatar>

@@ -211,8 +211,8 @@ export function OverviewPage() {
               {data.teamActivity.map((act: any) => (
                 <div key={act.id} className="flex items-start gap-3">
                   {act.initials ? (
-                    <Avatar className="size-8 bg-[var(--brand-light)]">
-                      <AvatarFallback className="text-[var(--brand-primary)] text-xs font-bold">
+                    <Avatar >
+                      <AvatarFallback variant="brand">
                         {act.initials}
                       </AvatarFallback>
                     </Avatar>
