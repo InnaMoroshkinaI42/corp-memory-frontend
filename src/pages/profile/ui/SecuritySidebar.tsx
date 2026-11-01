@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { CheckCircledIcon, DesktopIcon } from "@radix-ui/react-icons";
 import { Badge } from "@/shared/ui/badge";
 import { ExitIcon } from "@radix-ui/react-icons";
+import { useNavigate } from "react-router-dom";
 
 export function SecuritySidebar() {
+  const navigate = useNavigate();
   const { data: security, isLoading } = useQuery({
     queryKey: ["profile-security"],
     queryFn: () => fetch("/api/profile/security").then((r) => r.json()),
@@ -88,17 +90,17 @@ export function SecuritySidebar() {
         </CardContent>
       </Card>
       <div className="flex justify-end gap-3 mt-8">
-          <Button
-            variant="ghost"
-            className="gap-2 text-[var(--danger)] hover:bg-[var(--danger-soft)]"
-            onClick={() => {
-              localStorage.removeItem("token");
-              window.location.href = "/login";
-            }}
-          >
-            <ExitIcon className="size-4" /> Выйти из аккаунта
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          className="gap-2 text-[var(--danger)] hover:bg-[var(--danger-soft)]"
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigate("/login");
+          }}
+        >
+          <ExitIcon className="size-4" /> Выйти из аккаунта
+        </Button>
+      </div>
     </div>
   );
 }

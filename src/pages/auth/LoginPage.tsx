@@ -4,8 +4,10 @@ import { AuthInput } from "@/shared/ui/AuthInput";
 import { GoogleButton } from "@/shared/ui/GoogleButton";
 import { ArrowRightIcon, LockClosedIcon } from "@radix-ui/react-icons";
 import { AuthAside } from "@/shared/ui/AuthAside";
+import { useNavigate } from "react-router-dom";
 
 export function LoginPage() {
+  const navigate = useNavigate();
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2 font-sans bg-[var(--surface)]">
       {/* Левая панель — промо */}
@@ -38,7 +40,7 @@ export function LoginPage() {
             className="grid gap-5"
             onSubmit={(e) => {
               e.preventDefault();
-              window.location.href = "/companies";
+              navigate("/companies");
             }}
           >
             <div className="grid gap-1.5">
