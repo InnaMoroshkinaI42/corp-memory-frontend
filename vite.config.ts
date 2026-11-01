@@ -7,7 +7,7 @@ import { defineConfig } from "vite";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(() => {
-  const base = process.env.VITE_BASE_PATH || "/ai-knowledge-platform/";
+  const base = process.env.VITE_BASE_PATH || '/corp-memory-frontend/';
 
   return {
     base,
