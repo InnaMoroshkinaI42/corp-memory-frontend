@@ -3,17 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-    />
+    <link rel="icon" type="image/png" sizes="32x32" />
     <script>
       (function() {
-        var redirect = sessionStorage.getItem('redirect');
-        if (redirect) {
-          sessionStorage.removeItem('redirect');
-          history.replaceState(null, '', redirect);
+        var params = new URLSearchParams(window.location.search);
+        var redirectPath = params.get('p');
+        if (redirectPath && redirectPath.startsWith('/corp-memory-frontend/')) {
+          params.delete('p');
+          var newSearch = params.toString();
+          var newUrl = redirectPath + (newSearch ? '?' + newSearch : '');
+          window.history.replaceState(null, '', newUrl);
         }
       })();
     </script>
@@ -22,7 +21,6 @@
   </head>
   <body>
     <div id="root"></div>
-    
     <script type="module" src="/env.js"></script>
     <script type="module" src="/src/index.tsx"></script>
   </body>

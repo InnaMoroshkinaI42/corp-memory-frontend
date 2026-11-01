@@ -4,8 +4,12 @@
     <meta charset="utf-8">
     <title>Redirecting...</title>
     <script>
-      sessionStorage.setItem('redirect', window.location.pathname + window.location.search + window.location.hash);
-    window.location.replace('/corp-memory-frontend/');
+      var path = window.location.pathname;
+      var search = window.location.search;
+      var hash = window.location.hash;
+      window.location.replace(
+        '/corp-memory-frontend/?p=' + encodeURIComponent(path + search + hash)
+      );
     </script>
   </head>
 </html>
