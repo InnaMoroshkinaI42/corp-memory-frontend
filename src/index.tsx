@@ -6,10 +6,8 @@ import { App, appStarted } from './app'
 import './app/styles'
 
 async function enableMocking() {
-  if (import.meta.env.DEV) {
-    const { worker } = await import('./shared/api/mocks/browser')
-    return worker.start()
-  }
+  const { worker } = await import('./shared/api/mocks/browser')
+  return worker.start()
 }
 
 await enableMocking()

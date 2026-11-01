@@ -16,7 +16,7 @@ export const App = ({ scope }: AppProps) => {
   return (
     <Provider value={scope}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <BrowserRouter basename="/corp-memory-frontend/">
           <Router />
         </BrowserRouter>
       </QueryClientProvider>
