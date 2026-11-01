@@ -8,12 +8,22 @@
       type="image/png"
       sizes="32x32"
     />
-    <script type="module" src="/env.js"></script>
+    <script>
+      (function() {
+        var redirect = sessionStorage.getItem('redirect');
+        if (redirect) {
+          sessionStorage.removeItem('redirect');
+          history.replaceState(null, '', redirect);
+        }
+      })();
+    </script>
 
-    <title>Корпоративная память встреч </title>
+    <title>Корпоративная память встреч</title>
   </head>
   <body>
     <div id="root"></div>
+    
+    <script type="module" src="/env.js"></script>
     <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

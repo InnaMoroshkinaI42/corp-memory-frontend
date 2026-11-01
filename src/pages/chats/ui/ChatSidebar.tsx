@@ -31,6 +31,8 @@ export function ChatSidebar({ chats, activeChatId, companyId }: Props) {
     },
   })
 
+  
+
   return (
     <div className="flex h-full w-80 flex-col border-r border-[var(--border)] bg-white">
       <div className="p-4 border-b border-[var(--border)]">
