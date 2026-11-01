@@ -6,17 +6,17 @@
     <link rel="icon" type="image/png" sizes="32x32" />
     
     <script>
-      (function() {
-        var params = new URLSearchParams(window.location.search);
-        var redirectPath = params.get('p');
-        if (redirectPath && redirectPath.startsWith('/corp-memory-frontend/')) {
-          params.delete('p');
-          var newSearch = params.toString();
-          var newUrl = redirectPath + (newSearch ? '?' + newSearch : '');
-          window.history.replaceState(null, '', newUrl);
-        }
-      })();
-    </script>
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var redirectPath = params.get('p');
+    if (redirectPath) {
+      params.delete('p');
+      var newSearch = params.toString();
+      var newUrl = '/corp-memory-frontend' + redirectPath + (newSearch ? '?' + newSearch : '');
+      window.history.replaceState(null, '', newUrl);
+    }
+  })();
+</script>
 
     <title>Корпоративная память встреч</title>
   </head>
