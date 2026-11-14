@@ -34,22 +34,29 @@ export interface Chat {
   title: string
   created_at: string
 }
+export interface ChatTask {
+  id: string | number
+  assignee: string
+  title: string
+  due: string
+  sourceIndex: string | number
+}
 
+export interface ChatSource {
+  docId: string
+  label: string
+  quote: string
+  timestamp?: string
+}
 export interface ChatMessage {
   uuid: string
   chat_id: string
   role: ChatMessageAuthor
   content: string
   created_at: string
-  sources?: Array<{       
-    docId: string
-    label: string
-    quote: string
-    timestamp?: string   
-  }>
-  tasks?: any[] 
+  sources?: ChatSource[]
+  tasks?: ChatTask[]
 }
-
 export interface Document {
   uuid: string
   company_id: string

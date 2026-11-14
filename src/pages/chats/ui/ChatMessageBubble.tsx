@@ -3,8 +3,9 @@ import { AiAvatar } from '@/shared/ui/AiAvatar'
 import { Badge } from '@/shared/ui/badge'
 import { ChatTaskCard } from '@/shared/ui/ChatTaskCard'
 import { ChatSourcesList } from '@/shared/ui/ChatSourcesList'
+import type { ChatMessage } from '@/shared/api/types'
 
-export function ChatMessageBubble({ message }: { message: any }) {
+export function ChatMessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === 'USER'
 
   return (
@@ -21,6 +22,7 @@ export function ChatMessageBubble({ message }: { message: any }) {
         {!isUser && (
           <div className="flex items-center gap-2 text-xs">
             <span className="font-bold text-[var(--text)]">MeetMind</span>
+
             <Badge variant="brand" className="rounded-full px-2 py-0">
               По материалам компании
             </Badge>
@@ -37,8 +39,13 @@ export function ChatMessageBubble({ message }: { message: any }) {
           {message.content}
         </div>
 
-        {message.tasks && message.tasks.length > 0 && <ChatTaskCard tasks={message.tasks} />}
-        {message.sources && message.sources.length > 0 && <ChatSourcesList sources={message.sources} />}
+        {message.tasks && message.tasks.length > 0 && (
+          <ChatTaskCard tasks={message.tasks} />
+        )}
+
+        {message.sources && message.sources.length > 0 && (
+          <ChatSourcesList sources={message.sources} />
+        )}
       </div>
     </div>
   )

@@ -18,9 +18,10 @@ export function AuthInput({ icon, className, ...props }: AuthInputProps) {
           )}
         </div>
       )}
-      <Input 
-        className={cn('h-11', icon ? 'pl-10' : '', className)} 
-        {...props} 
+
+      <Input
+        className={cn('h-11', icon ? 'pl-10' : '', className)}
+        {...props}
       />
     </div>
   )
