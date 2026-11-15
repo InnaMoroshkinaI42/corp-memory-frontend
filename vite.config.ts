@@ -27,12 +27,20 @@ export default defineConfig(() => {
       },
     },
     test: {
-      environment: "jsdom",
-      globals: true,
-      setupFiles: "./src/test/setup.ts",
-      css: false,
-      clearMocks: true,
-      restoreMocks: true,
-    },
+  environment: "jsdom",
+  globals: true,
+  setupFiles: "./src/test/setup.ts",
+  css: false,
+  clearMocks: true,
+  restoreMocks: true,
+  exclude: [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/e2e/**",
+    "**/.{idea,git,cache,output,temp}/**",
+    "**/playwright-report/**",
+    "**/test-results/**",
+  ],
+},
   };
 });
