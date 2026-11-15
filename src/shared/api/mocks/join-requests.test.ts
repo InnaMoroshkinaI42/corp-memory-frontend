@@ -75,6 +75,42 @@ describe("Mock API: заявки и участники компании", () => 
     expect(approvedRequest?.status).toBe("ACCEPT");
   });
 
+
+    it("отклоняет существующую заявку", async () => {
+    const response = await fetch(
+      `${API_URL}/api/join-requests/jr-1/reject`,
+      { method: "POST" }
+    );
+
+    expect(response.status).toBe(200);
+
+    const result = await response.json();
+
+    expect(result.success).toBe(true);
+
+    const rejectedRequest = db.joinRequests.find(
+      request => request.uuid === "jr-1"
+    );
+
+    expect(rejectedRequest).toBeDefined();
+    expect(rejectedRequest?.status).toBe("REJECT");
+  });
+
+  it("возвращает 404 при отклонении несуществующей заявки", async () => {
+    const response = await fetch(
+      `${API_URL}/api/join-requests/unknown-id/reject`,
+      { method: "POST" }
+    );
+
+    expect(response.status).toBe(404);
+
+    const result = await response.json();
+
+    expect(result.success).toBe(false);
+    expect(result.message).toBe("Заявка не найдена");
+  });
+
+  
   it("возвращает список участников компании", async () => {
     const response = await fetch(
       `${API_URL}/api/companies/c-1/members`

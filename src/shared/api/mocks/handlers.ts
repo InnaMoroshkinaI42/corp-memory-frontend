@@ -1,10 +1,11 @@
 import { http, HttpResponse, delay } from 'msw'
 import { v4 as uuidv4 } from 'uuid'
 import { db, CURRENT_USER_ID } from './db'
-import type { Company, Document, ChatMessage } from '../types'
+import type { Company,
+  ChatMessage,
+  Document } from '../types'
 
 export const handlers = [
-  
   
   // --- Companies ---
 
@@ -468,10 +469,25 @@ http.delete('*/api/join-requests/:id', async ({ params }) => {
 }),
 
   http.post('*/api/join-requests/:id/approve', async ({ params }) => {
-    const req = db.joinRequests.find(r => r.uuid === params.id)
-    if (req) req.status = 'ACCEPT'
-    return HttpResponse.json({ success: true })
-  }),
+  const req = db.joinRequests.find(r => r.uuid === params.id)
+  if (req) req.status = 'ACCEPT'
+  return HttpResponse.json({ success: true })
+}),
+
+http.post('*/api/join-requests/:id/reject', async ({ params }) => {
+  const req = db.joinRequests.find(r => r.uuid === params.id)
+
+  if (!req) {
+    return HttpResponse.json(
+      { success: false, message: 'Заявка не найдена' },
+      { status: 404 },
+    )
+  }
+
+  req.status = 'REJECT'
+
+  return HttpResponse.json({ success: true })
+}),
 
   http.get('*/api/join-requests', async () => {
     return HttpResponse.json(db.joinRequests.map(req => {
@@ -487,16 +503,140 @@ http.delete('*/api/join-requests/:id', async ({ params }) => {
   }),
 
   // --- Members ---
-  http.get('*/api/companies/:id/members', async () => {
-    return HttpResponse.json([
-      { uuid: 'u-1', first_name: 'Алексей', last_name: 'Морозов', email: 'alexey@sever.team', role: 'Владелец' },
-      { uuid: 'u-2', first_name: 'Мария', last_name: 'Крылова', email: 'maria@sever.team', role: 'Администратор' },
-      { uuid: 'u-3', first_name: 'Илья', last_name: 'Волков', email: 'ilya@sever.team', role: 'Участник' },
-      { uuid: 'u-4', first_name: 'Анна', last_name: 'Лебедева', email: 'anna@sever.team', role: 'Участник' },
-      { uuid: 'u-5', first_name: 'Дмитрий', last_name: 'Орлов', email: 'dmitry@sever.team', role: 'Участник' },
-      { uuid: 'u-6', first_name: 'Ольга', last_name: 'Миронова', email: 'olga@sever.team', role: 'Наблюдатель' },
-    ])
-  }),
+
+// Получение участников компании
+http.get('*/api/companies/:id/members', async ({ params }) => {
+  const companyId = String(params.id)
+
+  const members = db.companyMembers.filter(
+    (member) => member.company_id === companyId,
+  )
+
+  return HttpResponse.json(members)
+}),
+
+// Изменение роли участника
+http.patch(
+  '*/api/companies/:companyId/members/:memberId/role',
+  async ({ params, request }) => {
+    const companyId = String(params.companyId)
+    const memberId = String(params.memberId)
+
+    const company = db.companies.find(
+      (item) => item.uuid === companyId,
+    )
+
+    if (!company) {
+      return HttpResponse.json(
+        { message: 'Компания не найдена' },
+        { status: 404 },
+      )
+    }
+
+    const member = db.companyMembers.find(
+      (item) =>
+        item.company_id === companyId &&
+        item.uuid === memberId,
+    )
+
+    if (!member) {
+      return HttpResponse.json(
+        { message: 'Участник не найден' },
+        { status: 404 },
+      )
+    }
+
+    if (member.uuid === company.owner_id) {
+      return HttpResponse.json(
+        { message: 'Нельзя изменить роль владельца компании' },
+        { status: 403 },
+      )
+    }
+
+    let body: { role?: string }
+
+    try {
+      body = await request.json() as { role?: string }
+    } catch {
+      return HttpResponse.json(
+        { message: 'Некорректный JSON' },
+        { status: 400 },
+      )
+    }
+
+    const allowedRoles = [
+      'Администратор',
+      'Участник',
+      'Наблюдатель',
+    ]
+
+    if (!body.role || !allowedRoles.includes(body.role)) {
+      return HttpResponse.json(
+        { message: 'Недопустимая роль' },
+        { status: 400 },
+      )
+    }
+
+    member.role = body.role as typeof member.role
+
+    return HttpResponse.json({
+      success: true,
+      member,
+    })
+  },
+),
+
+// Удаление участника
+http.delete(
+  '*/api/companies/:companyId/members/:memberId',
+  async ({ params }) => {
+    const companyId = String(params.companyId)
+    const memberId = String(params.memberId)
+
+    const company = db.companies.find(
+      (item) => item.uuid === companyId,
+    )
+
+    if (!company) {
+      return HttpResponse.json(
+        { message: 'Компания не найдена' },
+        { status: 404 },
+      )
+    }
+
+    const memberIndex = db.companyMembers.findIndex(
+      (item) =>
+        item.company_id === companyId &&
+        item.uuid === memberId,
+    )
+
+    if (memberIndex === -1) {
+      return HttpResponse.json(
+        { message: 'Участник не найден' },
+        { status: 404 },
+      )
+    }
+
+    const member = db.companyMembers[memberIndex]
+
+    if (member.uuid === company.owner_id) {
+      return HttpResponse.json(
+        { message: 'Нельзя удалить владельца компании' },
+        { status: 403 },
+      )
+    }
+
+    db.companyMembers.splice(memberIndex, 1)
+
+    company.members = db.companyMembers.filter(
+  (item) => item.company_id === companyId,
+).length
+
+    return HttpResponse.json({
+      success: true,
+    })
+  },
+),
 
   // --- Users / Profile / Security ---
   http.get('*/api/users', async () => HttpResponse.json(db.users)),
@@ -516,6 +656,78 @@ http.delete('*/api/join-requests/:id', async ({ params }) => {
   }),
 
   http.get('*/api/profile/security', async () => HttpResponse.json(db.profileSecurity)),
+
+  // Изменение пароля
+  http.put('*/api/profile/security/password', async ({ request }) => {
+    let body: { password?: string }
+
+    try {
+      body = await request.json() as { password?: string }
+    } catch {
+      return HttpResponse.json(
+        { message: 'Некорректные данные' },
+        { status: 400 },
+      )
+    }
+
+    if (!body.password || body.password.trim().length < 8) {
+      return HttpResponse.json(
+        { message: 'Пароль должен содержать не менее 8 символов' },
+        { status: 400 },
+      )
+    }
+
+    db.profileSecurity.passwordUpdatedAt =
+      new Date().toLocaleDateString('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+
+    return HttpResponse.json({ success: true })
+  }),
+
+  // Завершение остальных сессий
+  http.post(
+    '*/api/profile/security/sessions/terminate-others',
+    async () => {
+      db.profileSecurity.sessions =
+        db.profileSecurity.sessions.filter(
+          session => session.isCurrent,
+        )
+
+      return HttpResponse.json({
+        success: true,
+        sessions: db.profileSecurity.sessions,
+      })
+    },
+  ),
+
+  // Удаление аккаунта
+  http.delete('*/api/profile', async () => {
+    const ownedCompany = db.companies.find(
+      company => company.owner_id === CURRENT_USER_ID,
+    )
+
+    if (ownedCompany) {
+      return HttpResponse.json(
+        {
+          message: `Перед удалением аккаунта необходимо передать владение компанией «${ownedCompany.name}».`,
+        },
+        { status: 409 },
+      )
+    }
+
+    db.users = db.users.filter(
+      user => user.uuid !== CURRENT_USER_ID,
+    )
+
+    db.companyMembers = db.companyMembers.filter(
+      member => member.uuid !== CURRENT_USER_ID,
+    )
+
+    return HttpResponse.json({ success: true })
+  }),
 
   // --- Dashboard ---
   http.get('*/api/company/:id/dashboard', async ({ params }) => {

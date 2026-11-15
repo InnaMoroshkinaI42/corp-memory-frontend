@@ -1,5 +1,12 @@
-import type { User, Company, Chat, ChatMessage, Document, CompanyJoinRequest } from '../types'
-
+import type {
+  User,
+  Company,
+  Chat,
+  ChatMessage,
+  Document,
+  CompanyJoinRequest,
+  CompanyMember,
+} from '../types/er'
 export const CURRENT_USER_ID = 'u-1'
 
 export interface CompanyWithStats extends Company {}
@@ -11,6 +18,63 @@ export const db = {
     { uuid: 'u-3', first_name: 'Дмитрий', last_name: 'Волков' },
     { uuid: 'u-4', first_name: 'Елена', last_name: 'Соколова' },
   ] as User[],
+
+  companyMembers: [
+  {
+    uuid: 'u-1',
+    company_id: 'c-1',
+    first_name: 'Алексей',
+    last_name: 'Морозов',
+    email: 'alexey@sever.team',
+    role: 'Владелец',
+    joined_at: '2026-10-01T09:00:00.000Z',
+  },
+  {
+    uuid: 'u-2',
+    company_id: 'c-1',
+    first_name: 'Мария',
+    last_name: 'Крылова',
+    email: 'maria@sever.team',
+    role: 'Администратор',
+    joined_at: '2026-10-01T09:00:00.000Z',
+  },
+  {
+    uuid: 'u-3',
+    company_id: 'c-1',
+    first_name: 'Илья',
+    last_name: 'Волков',
+    email: 'ilya@sever.team',
+    role: 'Участник',
+    joined_at: '2026-10-02T09:00:00.000Z',
+  },
+  {
+    uuid: 'u-4',
+    company_id: 'c-1',
+    first_name: 'Анна',
+    last_name: 'Лебедева',
+    email: 'anna@sever.team',
+    role: 'Участник',
+    joined_at: '2026-10-03T09:00:00.000Z',
+  },
+  {
+    uuid: 'u-5',
+    company_id: 'c-1',
+    first_name: 'Дмитрий',
+    last_name: 'Орлов',
+    email: 'dmitry@sever.team',
+    role: 'Участник',
+    joined_at: '2026-10-04T09:00:00.000Z',
+  },
+  {
+    uuid: 'u-6',
+    company_id: 'c-1',
+    first_name: 'Ольга',
+    last_name: 'Миронова',
+    email: 'olga@sever.team',
+    role: 'Наблюдатель',
+    joined_at: '2026-10-05T09:00:00.000Z',
+  },
+] as CompanyMember[],
 
   companies: [
     { 

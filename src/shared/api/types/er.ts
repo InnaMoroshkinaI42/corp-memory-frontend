@@ -32,6 +32,17 @@ export interface Company {
   owner_name?: string
 }
 
+export interface CompanyMember {
+  uuid: string
+  company_id: string
+  first_name: string
+  last_name: string
+  email: string
+  role: 'Владелец' | 'Администратор' | 'Участник' | 'Наблюдатель'
+  joined_at: string
+}
+
+
 export interface Chat {
   uuid: string
   company_id: string
