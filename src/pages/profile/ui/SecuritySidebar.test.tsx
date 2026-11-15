@@ -229,7 +229,7 @@ describe('SecuritySidebar', () => {
     const user = userEvent.setup()
     vi.spyOn(window, 'confirm').mockReturnValue(true)
 
-    fetchMock.mockImplementation(async (url: string, options?: RequestInit) => {
+   fetchMock.mockImplementation(async (url: string) => {
       if (url === '/api/profile') {
         return {
           ok: false,
