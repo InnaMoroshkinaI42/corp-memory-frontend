@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 export function JoinCompanyPage() {
   const [isSent, setIsSent] = useState(false);
   const [companyId, setCompanyId] = useState("");
-
+  const [message, setMessage] = useState("");
   const { data: user } = useQuery({
     queryKey: ["profile"],
     queryFn: () => fetch("/api/profile").then((r) => r.json()),
@@ -35,8 +35,19 @@ export function JoinCompanyPage() {
     mutationFn: async () => {
       const res = await fetch(`/api/companies/${companyId}/join-requests`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: message.trim(),
+        }),
       });
-      if (!res.ok) throw new Error("Failed");
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Не удалось отправить заявку");
+      }
+
       return res.json();
     },
     onSuccess: () => {
@@ -76,6 +87,8 @@ export function JoinCompanyPage() {
               company={company}
               isPending={mutation.isPending}
               isSent={isSent}
+              message={message}
+              setMessage={setMessage}
               onSubmit={(e) => {
                 e.preventDefault();
                 mutation.mutate();

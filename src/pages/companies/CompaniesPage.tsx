@@ -18,37 +18,70 @@ interface JoinRequest {
   user_id: string;
   status: string;
   created_at: string;
+  user_name?: string;
+  company_name?: string;
+  user_email?: string;
+  dateText?: string;
 }
 
 const fetchCompanies = async (): Promise<Company[]> => {
   const res = await fetch("/api/companies");
-  if (!res.ok) throw new Error("Failed to fetch companies");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch companies");
+  }
+
   return res.json();
 };
 
 const fetchJoinRequests = async (): Promise<JoinRequest[]> => {
   const res = await fetch("/api/join-requests");
-  if (!res.ok) throw new Error("Failed to fetch join requests");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch join requests");
+  }
+
   return res.json();
 };
 
 export function CompaniesPage() {
-  const { data: companies, isLoading } = useQuery({
+  const {
+    data: companies,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["companies"],
     queryFn: fetchCompanies,
   });
 
-  const { data: requests } = useQuery({
+  const {
+    data: requests,
+    isError: requestsError,
+    refetch: refetchRequests,
+  } = useQuery({
     queryKey: ["join-requests"],
     queryFn: fetchJoinRequests,
   });
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <div className="p-8 text-center text-[var(--text-2)]">
         Загрузка компаний...
       </div>
     );
+  }
+
+  if (isError) {
+    return (
+      <div className="p-8 text-center text-[var(--text-2)]">
+        <p>Не удалось загрузить компании.</p>
+        <Button className="mt-4" onClick={() => refetch()}>
+          Повторить
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[var(--bg)] p-8">
@@ -64,12 +97,14 @@ export function CompaniesPage() {
               чатами.
             </p>
           </div>
+
           <div className="flex gap-3">
             <Link to="/companies/join">
               <Button variant="outline">
                 <Link2Icon className="size-4" /> Вступить в компанию
               </Button>
             </Link>
+
             <Link to="/companies/create">
               <Button>
                 <PlusIcon className="size-4" /> Создать компанию
@@ -79,108 +114,172 @@ export function CompaniesPage() {
         </div>
 
         {/* Сетка всех компаний */}
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          {companies?.map((company) => (
-            <Card key={company.uuid} className="shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <Avatar size="lg">
-                      <AvatarFallback variant="brand">
-                        {company.name[0]}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="text-xl font-bold text-[var(--text)]">
-                        {company.name}
-                      </div>
-                      <div className="text-xs text-[var(--text-3)]">
-                        Компания · {company.uuid}
-                      </div>
-                    </div>
-                  </div>
-                  <Badge
-                    variant="secondary"
-                    className=" text-[var(--brand-primary)]"
-                  >
-                    {company.owner_id === "u-1" ? "Владелец" : "Участник"}
-                  </Badge>
-                </div>
+        {companies && companies.length > 0 ? (
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            {companies.map((company) => (
+              <Card key={company.uuid} className="shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <Avatar size="lg">
+                        <AvatarFallback variant="brand">
+                          {company.name[0]}
+                        </AvatarFallback>
+                      </Avatar>
 
-                <div className="flex gap-6 border-t border-[var(--border)] pt-4 mb-6">
-                  <div>
-                    <div className="text-lg font-bold">{company.members}</div>
-                    <div className="text-xs text-[var(--text-3)]">
-                      участников
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold">{company.documents}</div>
-                    <div className="text-xs text-[var(--text-3)]">
-                      документа
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold">{company.chats}</div>
-                    <div className="text-xs text-[var(--text-3)]">чатов</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-[var(--text-3)]">
-                    Открыта {company.lastActive}
-                  </span>
-                  <Link to={`/app/overview/${company.uuid}`}>
-                    <Button>
-                      <ArrowRightIcon className="size-4" /> Открыть компанию
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Заявки на вступление */}
-        {requests && requests.length > 0 && (
-          <div className="mt-10">
-            <h2 className="text-xl font-bold text-[var(--text)] mb-4">
-              Ожидающие запросы
-            </h2>
-            {requests.map((req: any) => (
-              <Card key={req.uuid} className="shadow-sm mb-3">
-                <CardContent className="flex items-center justify-between p-4">
-                  <div className="flex items-center gap-4">
-                    <Avatar >
-                      <AvatarFallback variant="brand">
-                        {req.user_name
-                          .split(" ")
-                          .map((n: string) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="text-sm font-semibold text-[var(--text)]">
-                        {req.user_name} хочет вступить в «{req.company_name}»
-                      </div>
-                      <div className="text-xs text-[var(--text-3)]">
-                        {req.user_email} · по ID {req.company_id} ·{" "}
-                        {req.dateText}
+                      <div>
+                        <div className="text-xl font-bold text-[var(--text)]">
+                          {company.name}
+                        </div>
+                        <div className="text-xs text-[var(--text-3)]">
+                          Компания · {company.uuid}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <Badge className="bg-[var(--warn-soft)] text-[var(--warn)] rounded-full">
-                      <div className="size-1.5 rounded-full bg-[var(--warn)] mr-1.5" />{" "}
-                      Ожидает подтверждения
+
+                    <Badge
+                      variant="secondary"
+                      className="text-[var(--brand-primary)]"
+                    >
+                      {company.owner_id === "u-1" ? "Владелец" : "Участник"}
                     </Badge>
-                    <Link to={`/app/members/${req.company_id}`}>
-                      <Button variant="outline">Рассмотреть запрос</Button>
+                  </div>
+
+                  <div className="flex gap-6 border-t border-[var(--border)] pt-4 mb-6">
+                    <div>
+                      <div className="text-lg font-bold">{company.members}</div>
+                      <div className="text-xs text-[var(--text-3)]">
+                        участников
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-lg font-bold">
+                        {company.documents}
+                      </div>
+                      <div className="text-xs text-[var(--text-3)]">
+                        документа
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-lg font-bold">{company.chats}</div>
+                      <div className="text-xs text-[var(--text-3)]">чатов</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-[var(--text-3)]">
+                      Открыта {company.lastActive}
+                    </span>
+
+                    <Link to={`/app/overview/${company.uuid}`}>
+                      <Button>
+                        <ArrowRightIcon className="size-4" /> Открыть компанию
+                      </Button>
                     </Link>
                   </div>
                 </CardContent>
               </Card>
             ))}
+          </div>
+        ) : (
+          /* Пустое состояние */
+          <Card className="p-8 text-center shadow-sm">
+            <CardContent>
+              <h2 className="text-xl font-bold text-[var(--text)]">
+                У вас пока нет компаний
+              </h2>
+
+              <p className="mt-2 text-sm text-[var(--text-2)]">
+                Создайте компанию или вступите в существующую.
+              </p>
+
+              <div className="mt-4 flex justify-center gap-3">
+                <Link to="/companies/create">
+                  <Button>
+                    <PlusIcon className="size-4" /> Создать компанию
+                  </Button>
+                </Link>
+
+                <Link to="/companies/join">
+                  <Button variant="outline">
+                    <Link2Icon className="size-4" /> Вступить в компанию
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Ошибка загрузки заявок */}
+        {requestsError && (
+          <div className="mt-6 text-sm text-[var(--text-2)]">
+            Не удалось загрузить заявки.
+            <Button
+              variant="outline"
+              size="sm"
+              className="ml-3"
+              onClick={() => refetchRequests()}
+            >
+              Повторить
+            </Button>
+          </div>
+        )}
+
+        {/* Заявки на вступление */}
+        {!requestsError && requests && requests.length > 0 && (
+          <div className="mt-10">
+            <h2 className="text-xl font-bold text-[var(--text)] mb-4">
+              Ожидающие запросы
+            </h2>
+
+            {requests.map((req) => {
+              const userName = req.user_name || "Пользователь";
+
+              return (
+                <Card key={req.uuid} className="shadow-sm mb-3">
+                  <CardContent className="flex items-center justify-between p-4">
+                    <div className="flex items-center gap-4">
+                      <Avatar>
+                        <AvatarFallback variant="brand">
+                          {userName
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+
+                      <div>
+                        <div className="text-sm font-semibold text-[var(--text)]">
+                          {userName} хочет вступить в «
+                          {req.company_name || "компанию"}»
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          {req.user_email || "Email не указан"}
+                        </p>
+
+                        <div className="text-xs text-[var(--text-3)]">
+                          по ID {req.company_id} ·{" "}
+                          {req.dateText || "Дата не указана"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <Badge className="bg-[var(--warn-soft)] text-[var(--warn)] rounded-full">
+                        <div className="size-1.5 rounded-full bg-[var(--warn)] mr-1.5" />
+                        Ожидает подтверждения
+                      </Badge>
+
+                      <Link to={`/app/members/${req.company_id}`}>
+                        <Button variant="outline">Рассмотреть запрос</Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         )}
 

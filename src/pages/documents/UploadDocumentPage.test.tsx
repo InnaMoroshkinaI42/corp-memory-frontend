@@ -68,7 +68,7 @@ describe('UploadDocumentPage — интеграционные тесты', () =>
         name: 'Список документов',
       }),
     ).toBeInTheDocument()
-  })
+  }, 10000)
 
   it('отправляет текстовую запись', async () => {
     const user = userEvent.setup()

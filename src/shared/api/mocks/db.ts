@@ -138,15 +138,28 @@ export const db = {
   ] as ChatMessage[],
 
   joinRequests: [
-    { 
-      uuid: 'jr-1', 
-      company_id: 'c-1', 
-      user_id: 'u-4',
-      status: 'SENDED', 
-      created_at: new Date().toISOString(),
-      dateText: '6 октября, 09:40'
-    },
-  ] as (CompanyJoinRequest & { dateText: string })[],
+  {
+    uuid: 'jr-1',
+    company_id: 'c-1',
+    user_id: 'u-1',
+    status: 'SENDED',
+    created_at: new Date().toISOString(),
+    dateText: '6 октября, 09:40',
+    message: 'Присоединяюсь к команде как дизайнер.',
+  },
+  {
+    uuid: 'jr-2',
+    company_id: 'c-2',
+    user_id: 'u-1',
+    status: 'SENDED',
+    created_at: new Date().toISOString(),
+    dateText: '6 октября, 09:40',
+    message: 'Присоединяюсь к команде как дизайнер.',
+  },
+] as (CompanyJoinRequest & {
+  dateText: string
+  message?: string
+})[],
 
   // Дашборд — использует те же документы/решения, что и везде (id с дефисом)
   dashboards: {

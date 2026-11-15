@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { LockClosedIcon } from '@radix-ui/react-icons'
 import { Card, CardContent } from '@/shared/ui/card'
 import { Button } from '@/shared/ui/button'
@@ -10,42 +11,123 @@ interface Props {
   ownerName?: string
 }
 
-export function WaitingRequestCard({ company, request, ownerName }: Props) {
+export function WaitingRequestCard({
+  company,
+  request,
+  ownerName,
+}: Props) {
+  const queryClient = useQueryClient()
+
+  const cancelMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch(
+        `/api/join-requests/${request.uuid}`,
+        {
+          method: 'DELETE',
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error('Не удалось отменить заявку')
+      }
+
+      return response.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['company-join-requests', company.uuid],
+      })
+    },
+  })
+
+  const requestDate = request.dateText
+    || (request.created_at
+      ? new Date(request.created_at).toLocaleString('ru-RU')
+      : null)
+
+  const ownerInitials = ownerName
+    ? ownerName
+        .split(' ')
+        .map((name: string) => name[0])
+        .join('')
+    : 'В'
+
   return (
     <Card>
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
-            <Avatar size="lg"><AvatarFallback variant="brand">{company.name[0]}</AvatarFallback></Avatar>
+            <Avatar size="lg">
+              <AvatarFallback variant="brand">
+                {company?.name?.[0] || 'К'}
+              </AvatarFallback>
+            </Avatar>
+
             <div>
-              <div className="text-xl font-bold text-[var(--text)]">{company?.name || 'Компания'}</div>
-              <div className="text-xs text-[var(--text-3)]">{company?.industry} · {company?.uuid}</div>
+              <div className="text-xl font-bold text-[var(--text)]">
+                {company?.name || 'Компания'}
+              </div>
+
+              <div className="text-xs text-[var(--text-3)]">
+                {company?.industry}
+                {company?.industry && company?.uuid ? ' · ' : ''}
+                {company?.uuid}
+              </div>
             </div>
           </div>
+
           <Badge variant="secondary" className="text-[var(--warn)]">
-            <div className="size-1.5 rounded-full bg-[var(--warn)] mr-1.5" /> Ожидает подтверждения
+            <div className="size-1.5 rounded-full bg-[var(--warn)] mr-1.5" />
+            Ожидает подтверждения
           </Badge>
         </div>
 
         <div className="border-t border-[var(--border)] pt-4 space-y-3">
-          <div className="text-sm text-[var(--text-2)]">Запрос отправлен {request?.dateText || '6 октября 2026, 09:40'}</div>
-          <div className="text-sm italic text-[var(--text-3)]">«Присоединяюсь к команде как дизайнер.»</div>
+          {requestDate && (
+            <div className="text-sm text-[var(--text-2)]">
+              Запрос отправлен {requestDate}
+            </div>
+          )}
+
+          {request.message && (
+            <div className="text-sm italic text-[var(--text-3)]">
+              «{request.message}»
+            </div>
+          )}
+
           <div className="flex items-center gap-2 text-xs text-[var(--text-2)]">
-            <Avatar >
+            <Avatar>
               <AvatarFallback variant="brand">
-                {ownerName ? ownerName.split(' ').map((n: string) => n[0]).join('') : 'АС'}
+                {ownerInitials}
               </AvatarFallback>
             </Avatar>
+
             Подтверждает {ownerName || 'владелец'} · владелец
           </div>
         </div>
 
         <div className="flex items-center gap-3 mt-6">
           <Button disabled>
-            <LockClosedIcon className="size-4" /> Доступ ещё не открыт
+            <LockClosedIcon className="size-4" />
+            Доступ ещё не открыт
           </Button>
-          <Button variant="outline">Отменить запрос</Button>
+
+          <Button
+            variant="outline"
+            disabled={cancelMutation.isPending}
+            onClick={() => cancelMutation.mutate()}
+          >
+            {cancelMutation.isPending
+              ? 'Отмена...'
+              : 'Отменить запрос'}
+          </Button>
         </div>
+
+        {cancelMutation.isError && (
+          <p className="text-sm text-red-500 mt-3">
+            Не удалось отменить заявку. Попробуйте ещё раз.
+          </p>
+        )}
       </CardContent>
     </Card>
   )

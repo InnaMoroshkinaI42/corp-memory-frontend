@@ -44,7 +44,7 @@ export function SettingsPage() {
           <CompanyProfileCard company={company} />
           <InviteLinkCard companyId={company.uuid} />
           <PermissionsTable />
-          <DangerZone />
+          <DangerZone companyId={company.uuid} />
         </>
       )}
 

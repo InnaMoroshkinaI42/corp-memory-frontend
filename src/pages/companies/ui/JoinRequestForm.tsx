@@ -10,9 +10,20 @@ interface Props {
   isPending: boolean
   isSent: boolean
   onSubmit: (e: React.FormEvent) => void
+  message: string;
+  setMessage: (value: string) => void;
 }
 
-export function JoinRequestForm({ companyId, setCompanyId, company, isPending, isSent, onSubmit }: Props) {
+export function JoinRequestForm({
+  companyId,
+  setCompanyId,
+  company,
+  isPending,
+  isSent,
+  message,
+  setMessage,
+  onSubmit,
+}: Props) {
   if (isSent) {
     return (
       <div className="space-y-4">
@@ -77,7 +88,13 @@ export function JoinRequestForm({ companyId, setCompanyId, company, isPending, i
 
       <div className="space-y-1.5">
         <Label htmlFor="message">Сообщение владельцу</Label>
-        <Input id="message" className="h-11" placeholder="Присоединяюсь к команде как дизайнер." />
+        <Input
+  id="message"
+  value={message}
+  onChange={(e) => setMessage(e.target.value)}
+  className="h-11"
+  placeholder="Присоединяюсь к команде как дизайнер."
+/>
       </div>
 
       <Button 

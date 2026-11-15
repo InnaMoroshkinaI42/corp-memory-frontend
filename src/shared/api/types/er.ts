@@ -16,7 +16,12 @@ export interface Company {
   name: string
   owner_id: string
   created_at: string
-  // Поля для UI (мок-данные)
+
+  // Основная информация
+  description?: string
+  domain?: string
+
+  // Поля для UI и обратной совместимости с существующими мок-данными
   role?: string
   members?: number
   documents?: number

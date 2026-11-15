@@ -5,7 +5,9 @@ import type { Company, Document, ChatMessage } from '../types'
 
 export const handlers = [
   
+  
   // --- Companies ---
+
   http.get('*/api/companies', async () => {
     await delay(300)
     return HttpResponse.json(db.companies)
@@ -13,21 +15,226 @@ export const handlers = [
 
   http.get('*/api/companies/:id', async ({ params }) => {
     const company = db.companies.find(c => c.uuid === params.id)
-    if (!company) return new HttpResponse(null, { status: 404 })
+
+    if (!company) {
+      return HttpResponse.json(
+        { message: 'Компания не найдена' },
+        { status: 404 }
+      )
+    }
+
     return HttpResponse.json(company)
   }),
 
+  // Создание компании
   http.post('*/api/companies', async ({ request }) => {
-    const body = await request.json() as { name: string }
+    let body: {
+      name?: string
+      description?: string
+      domain?: string
+    }
+
+    try {
+      body = await request.json() as typeof body
+    } catch {
+      return HttpResponse.json(
+        { message: 'Некорректный JSON' },
+        { status: 400 }
+      )
+    }
+
+    const name = typeof body.name === 'string' ? body.name.trim() : ''
+    const description =
+      typeof body.description === 'string' ? body.description.trim() : ''
+    const domain =
+      typeof body.domain === 'string' ? body.domain.trim() : ''
+
+    if (!name) {
+      return HttpResponse.json(
+        { message: 'Название компании обязательно' },
+        { status: 400 }
+      )
+    }
+
+    if (name.length > 100) {
+      return HttpResponse.json(
+        { message: 'Название компании не должно превышать 100 символов' },
+        { status: 400 }
+      )
+    }
+
+    if (description.length > 500) {
+      return HttpResponse.json(
+        { message: 'Описание не должно превышать 500 символов' },
+        { status: 400 }
+      )
+    }
+
+    if (domain.length > 253) {
+      return HttpResponse.json(
+        { message: 'Домен слишком длинный' },
+        { status: 400 }
+      )
+    }
+
     const company: Company = {
       uuid: uuidv4(),
-      name: body.name,
+      name,
+      description,
+      domain,
       owner_id: CURRENT_USER_ID,
       created_at: new Date().toISOString(),
+      role: 'Владелец',
+      members: 1,
+      documents: 0,
+      chats: 0,
     }
-    db.companies.push(company as any)
+
+    db.companies.push(company)
+
     return HttpResponse.json(company, { status: 201 })
   }),
+
+  // Редактирование компании
+  http.put('*/api/companies/:id', async ({ params, request }) => {
+    const company = db.companies.find(c => c.uuid === params.id)
+
+    if (!company) {
+      return HttpResponse.json(
+        { message: 'Компания не найдена' },
+        { status: 404 }
+      )
+    }
+
+    if (company.owner_id !== CURRENT_USER_ID) {
+      return HttpResponse.json(
+        { message: 'Недостаточно прав для редактирования компании' },
+        { status: 403 }
+      )
+    }
+
+    let body: {
+      name?: string
+      description?: string
+      domain?: string
+    }
+
+    try {
+      body = await request.json() as typeof body
+    } catch {
+      return HttpResponse.json(
+        { message: 'Некорректный JSON' },
+        { status: 400 }
+      )
+    }
+
+    const name = typeof body.name === 'string' ? body.name.trim() : ''
+    const description =
+      typeof body.description === 'string' ? body.description.trim() : ''
+    const domain =
+      typeof body.domain === 'string' ? body.domain.trim() : ''
+
+    if (!name) {
+      return HttpResponse.json(
+        { message: 'Название компании обязательно' },
+        { status: 400 }
+      )
+    }
+
+    if (name.length > 100) {
+      return HttpResponse.json(
+        { message: 'Название компании не должно превышать 100 символов' },
+        { status: 400 }
+      )
+    }
+
+    if (description.length > 500) {
+      return HttpResponse.json(
+        { message: 'Описание не должно превышать 500 символов' },
+        { status: 400 }
+      )
+    }
+
+    if (domain.length > 253) {
+      return HttpResponse.json(
+        { message: 'Домен слишком длинный' },
+        { status: 400 }
+      )
+    }
+
+    company.name = name
+    company.description = description
+    company.domain = domain
+
+    return HttpResponse.json(company)
+  }),
+
+  // Удаление компании
+  http.delete('*/api/companies/:id', async ({ params }) => {
+    const companyIndex = db.companies.findIndex(
+      c => c.uuid === params.id
+    )
+
+    if (companyIndex === -1) {
+      return HttpResponse.json(
+        { message: 'Компания не найдена' },
+        { status: 404 }
+      )
+    }
+
+    const company = db.companies[companyIndex]
+
+    if (company.owner_id !== CURRENT_USER_ID) {
+      return HttpResponse.json(
+        { message: 'Недостаточно прав для удаления компании' },
+        { status: 403 }
+      )
+    }
+
+    const companyId = company.uuid
+
+    // Находим чаты компании
+    const companyChatIds = db.chats
+      .filter(chat => chat.company_id === companyId)
+      .map(chat => chat.uuid)
+
+    // Удаляем компанию
+    db.companies.splice(companyIndex, 1)
+
+    // Удаляем документы
+    db.documents = db.documents.filter(
+      doc => doc.company_id !== companyId
+    )
+
+    // Удаляем решения
+    db.decisions = db.decisions.filter(
+      decision => decision.company_id !== companyId
+    )
+
+    // Удаляем чаты
+    db.chats = db.chats.filter(
+      chat => chat.company_id !== companyId
+    )
+
+    // Удаляем сообщения удалённых чатов
+    db.chatMessages = db.chatMessages.filter(
+      message => !companyChatIds.includes(message.chat_id)
+    )
+
+    // Удаляем заявки на вступление
+    db.joinRequests = db.joinRequests.filter(
+      request => request.company_id !== companyId
+    )
+
+    // Удаляем dashboard
+    delete db.dashboards[companyId as keyof typeof db.dashboards]
+
+    return HttpResponse.json({
+      success: true,
+      message: 'Компания и связанные данные удалены',
+    })
+  }),
+
 
 
   // --- Documents ---
@@ -139,32 +346,126 @@ export const handlers = [
     return HttpResponse.json(msg, { status: 201 })
   }),
 
-  // --- Join Requests (обогащённые) ---
-  http.get('*/api/companies/:id/join-requests', async ({ params }) => {
-    const reqs = db.joinRequests.filter(r => r.company_id === params.id)
-    return HttpResponse.json(reqs.map(r => {
-      const user = db.users.find(u => u.uuid === r.user_id)
-      return {
-        ...r,
-        user_name: user ? `${user.first_name} ${user.last_name}` : 'Пользователь',
-        user_email: r.user_id === 'u-4' ? 'elena@sever.team' : 'user@sever.team',
-        initials: user ? `${user.first_name[0]}${user.last_name[0]}` : '?',
-      }
-    }))
-  }),
+// --- Join Requests ---
 
-  http.post('*/api/companies/:id/join-requests', async ({ params }) => {
-    const newRequest = {
-      uuid: uuidv4(),
-      company_id: String(params.id),
-      user_id: CURRENT_USER_ID,
-      status: 'SENDED',
-      created_at: new Date().toISOString(),
-      dateText: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) + ', ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+// Получение заявок конкретной компании
+http.get('*/api/companies/:id/join-requests', async ({ params }) => {
+  const requests = db.joinRequests
+    .filter(request => request.company_id === String(params.id))
+    .map(req => {
+      const company = db.companies.find(
+        c => c.uuid === req.company_id
+      )
+
+      const user = db.users.find(
+        u => u.uuid === req.user_id
+      )
+
+      return {
+        ...req,
+        company_name: company?.name || '—',
+        user_name: user
+          ? `${user.first_name} ${user.last_name}`
+          : '—',
+        user_email: req.user_id === 'u-4'
+          ? 'elena@sever.team'
+          : 'unknown@mail.ru',
+      }
+    })
+
+  return HttpResponse.json(requests)
+}),
+
+// Создание заявки
+http.post('*/api/companies/:id/join-requests', async ({ params, request }) => {
+  const text = await request.text()
+
+  let body: { message?: string } = {}
+
+  if (text) {
+    try {
+      body = JSON.parse(text)
+    } catch {
+      return HttpResponse.json(
+        { message: 'Некорректные данные запроса' },
+        { status: 400 }
+      )
     }
-    db.joinRequests.push(newRequest as any)
-    return HttpResponse.json(newRequest, { status: 201 })
-  }),
+  }
+
+  const companyId = String(params.id)
+
+  const company = db.companies.find(
+    item => item.uuid === companyId
+  )
+
+  if (!company) {
+    return HttpResponse.json(
+      { message: 'Компания не найдена' },
+      { status: 404 }
+    )
+  }
+
+  const now = new Date()
+
+  const newRequest = {
+    uuid: uuidv4(),
+    company_id: companyId,
+    user_id: CURRENT_USER_ID,
+    status: 'SENDED',
+    created_at: now.toISOString(),
+    dateText:
+      now.toLocaleDateString('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }) +
+      ', ' +
+      now.toLocaleTimeString('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    message: body.message?.trim() || '',
+  }
+
+  db.joinRequests.push(newRequest as any)
+
+  return HttpResponse.json(newRequest, { status: 201 })
+}),
+
+// Отмена заявки
+http.delete('*/api/join-requests/:id', async ({ params }) => {
+  const requestIndex = db.joinRequests.findIndex(
+    request => request.uuid === params.id
+  )
+
+  if (requestIndex === -1) {
+    return HttpResponse.json(
+      { message: 'Заявка не найдена' },
+      { status: 404 }
+    )
+  }
+
+  const joinRequest = db.joinRequests[requestIndex]
+
+  if (joinRequest.user_id !== CURRENT_USER_ID) {
+    return HttpResponse.json(
+      { message: 'Нет доступа к отмене этой заявки' },
+      { status: 403 }
+    )
+  }
+
+  if (joinRequest.status !== 'SENDED') {
+    return HttpResponse.json(
+      { message: 'Можно отменить только ожидающую заявку' },
+      { status: 409 }
+    )
+  }
+
+  db.joinRequests.splice(requestIndex, 1)
+
+  return HttpResponse.json({ success: true })
+}),
 
   http.post('*/api/join-requests/:id/approve', async ({ params }) => {
     const req = db.joinRequests.find(r => r.uuid === params.id)
